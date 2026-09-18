@@ -1,0 +1,12 @@
+function(configure_target target)
+	if(MSVC)
+		target_compile_options(${target} PRIVATE /W4 /permissive- /utf-8 /EHsc)
+		set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+	else()
+		target_compile_options(${target} PRIVATE -Wall -Wextra -Wpedantic)
+	endif()
+endfunction()
+
+add_library(BenchmarkData STATIC BenchmarkData.cpp)
+target_compile_features(BenchmarkData PUBLIC cxx_std_20)
+configure_target(BenchmarkData)
