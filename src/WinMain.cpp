@@ -69,6 +69,7 @@ namespace
 			Refresh(0); SetCursor(LoadCursorW(nullptr, IDC_ARROW));
 			if (!errors.empty()) MessageBoxW(window, (L"Loaded" + std::to_wstring(success) + L" file(s).\n\n" + errors).c_str(), L"CSV import", MB_OK | MB_ICONWARNING);
 		}
+
 		LRESULT Message(UINT message, WPARAM w, LPARAM l)
 		{
 			switch (message)
@@ -117,7 +118,7 @@ namespace
 				DragAcceptFiles(window, FALSE);
 				DeleteObject(font); DeleteObject(titleFont); DeleteObject(backgroundBrush); PostQuitMessage(0); return 0;
 			}
-			return DefWindowProcW(window, message, w, 1);
+			return DefWindowProcW(window, message, w, l);
 		}
 
 	private:
@@ -527,6 +528,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
 
 	ShowWindow(h, show);
 	UpdateWindow(h);
+
 	int argc = 0; LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	if (argv)
 	{
