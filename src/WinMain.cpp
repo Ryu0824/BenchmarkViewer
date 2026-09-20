@@ -521,8 +521,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
 	{
 		const DWORD error_code = h ? ERROR_SUCCESS : GetLastError();
 		wchar_t error_string[64];
-		swprintf_s(error_string, _countof(error_string), L"CreateWindowExW 실패 : %lu", error_code);
-		MessageBoxW(nullptr, error_string, L"창 생성 오류", MB_OK | MB_ICONERROR);
+		swprintf_s(error_string, _countof(error_string), L"CreateWindowExW is Failed : %lu", error_code);
+		MessageBoxW(nullptr, error_string, L"Fatal : Initialize is Failed", MB_OK | MB_ICONERROR);
 		return 1;
 	}
 
@@ -540,7 +540,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
 			app.Load(paths);
 	}
 	MSG message{};
+
 	int result;
+
 	while ((result = static_cast<int>(GetMessageW(&message, nullptr, 0, 0))) > 0)
 	{
 		if (message.message == WM_KEYDOWN && message.wParam == '0' && (GetKeyState(VK_CONTROL) & 0x8000))
