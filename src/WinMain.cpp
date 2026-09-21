@@ -319,7 +319,7 @@ namespace
 			else { for (const auto& s : summaries) { values.push_back(s.minimum); values.push_back(s.median); values.push_back(s.maximum); } }
 			if (values.empty()) { RECT r = panel; r.top += Px(65); Text(dc, r, L"No samples for this metric / selection. ", Muted, DT_CENTER | DT_VCENTER | DT_SINGLELINE); return; }
 			bench::ChartScale scale(values, log);
-			RECT plot{ panel.right + Px(113), panel.top + Px(101), panel.right - Px(24), panel.bottom - Px(39) };
+			RECT plot{ panel.left + Px(113), panel.top + Px(101), panel.right - Px(24), panel.bottom - Px(39) };
 			if (plot.right <= plot.left || plot.bottom <= plot.top) return;
 			GridLines(dc, plot, scale);
 			auto y = [&](double v) {return plot.bottom - static_cast<int>(*scale.Fraction(v) * (plot.bottom - plot.top));};
