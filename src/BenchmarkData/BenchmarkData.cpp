@@ -179,6 +179,8 @@ namespace bench
 				throw std::runtime_error("Missing column" + k);
 
 		std::vector<Row> out;
+
+		// Header Exclude
 		for (std::size_t i = 1;i < table.size();++i)
 		{
 			const auto prefix = "Record" + std::to_string(i + 1) + ": ";
@@ -187,14 +189,20 @@ namespace bench
 				throw std::runtime_error(prefix + "column count mismatch");
 
 			Row r; r.summary = summary;
-			for (std::size_t j = 0;j < header.size();++j) r.fields.emplace(header[j], table[i][j]);
+			for (std::size_t j = 0;j < header.size();++j) 
+				r.fields.emplace(header[j], table[i][j]);
+
 			for (auto k : { "run_id","case","sizes","backend" })
-				if (Trim(r.Get(k)).empty()) throw std::runtime_error(prefix + "empty key: " + k);
+				if (Trim(r.Get(k)).empty()) 
+					throw std::runtime_error(prefix + "empty key: " + k);
+
 			for (const auto& k : numeric)
 			{
 				auto n = r.Number(k);
-				if (!n || *n < 0)throw std::runtime_error(prefix + "invalid nonnegative number: " + k);
+				if (!n || *n < 0)
+					throw std::runtime_error(prefix + "invalid nonnegative number: " + k);
 			}
+
 			if (!summary)
 			{
 				const double round = *r.Number("round");
@@ -204,6 +212,7 @@ namespace bench
 			else if (*r.Number("min_ns_per_pair") > *r.Number("median_ns_per_pair") ||
 				*r.Number("median_ns_per_pair") > *r.Number("max_ns_per_pair"))
 				throw std::runtime_error(prefix + "expectd min <= median <= max.");
+
 			out.push_back(std::move(r));
 		}
 		return out;
@@ -267,7 +276,6 @@ namespace bench
 		std::map<std::string, Run> result;
 		for (const auto& [key, r] : rows)
 		{
-			(void)key;
 			auto run = r.RunKey();
 			if (result.contains(run)) continue;
 			std::string desc;
@@ -275,7 +283,7 @@ namespace bench
 			result.emplace(run, Run{ run, r.Get("run_id") + " | " + r.Get("platform") + " | " + r.Get("compiler") + " | slots=" + r.Get("slots") + " | pairs=" + r.Get("allocation_pairs"), desc });
 		}
 		std::vector<Run> out;
-		for (const auto& [key, r] : result) { (void)key;out.push_back(r); }
+		for (const auto& [key, r] : result) { out.push_back(r); }
 		for (std::size_t i = 0;i < out.size();++i) out[i].label = '[' + std::to_string(i + 1) + "] " + out[i].label;
 		return out;
 	}
@@ -294,7 +302,12 @@ namespace bench
 	std::vector<std::string> Dataset::Cases(const std::string& run) const
 	{
 		std::set<std::string> result;
-		for (const auto& [key, r] : rows) { (void)key;if (r.RunKey() == run) result.insert(r.Get("case")); }
+		for (const auto& [key, r] : rows) 
+		{ 
+			if (r.RunKey() == run) 
+				result.insert(r.Get("case")); 
+		}
+
 		return { result.begin(), result.end() };
 	}
 
