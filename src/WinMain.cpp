@@ -86,7 +86,7 @@ namespace
 				else if (LOWORD(w) == Export) Save();
 				else if (LOWORD(w) == Help) ShowHelp();
 				else if (LOWORD(w) == LogScale) { hover.clear(); InvalidateRect(window, nullptr, FALSE); }
-				else if (LOWORD(w) == CBN_SELCHANGE)
+				else if (HIWORD(w) == CBN_SELCHANGE)
 				{
 					if (LOWORD(w) == RunSelect) Refresh(1);
 					else if (LOWORD(w) == CaseSelect) Refresh(2);
@@ -136,7 +136,9 @@ namespace
 		std::vector<Hover> hover;
 		std::wstring hovered, status;
 		RECT charts{}, statusRect{};
+
 		int Px(int v) const { return static_cast<int>(std::lround(v * dpiScale)); }
+
 		HWND Control(const wchar_t* kind, const wchar_t* text, DWORD style, int id = 0)
 		{
 			HWND h = CreateWindowExW(0, kind, text, WS_CHILD | WS_VISIBLE | style, 0, 0, 10, 10, window,
@@ -196,13 +198,20 @@ namespace
 
 		void SetOptions(HWND h, const std::vector<std::string>& values, const std::string& previous)
 		{
+			// Initialize
 			SendMessageW(h, CB_RESETCONTENT, 0, 0); int selected = 0;
+
+			// ComboBox String Add 
 			for (std::size_t i = 0;i < values.size();++i)
 			{
 				auto s = Wide(values[i]); SendMessageW(h, CB_ADDSTRING, 0, reinterpret_cast<LPARAM>(s.c_str()));
 				if (values[i] == previous) selected = static_cast<int>(i);
 			}
+
+			// Selected Initialzing
 			if (!values.empty())SendMessageW(h, CB_SETCURSEL, static_cast<WPARAM>(selected), 0);
+
+			// If there is no value, deactivate the corresponding window
 			EnableWindow(h, !values.empty());
 		}
 
@@ -222,16 +231,17 @@ namespace
 				if (!runs.empty())
 					SendMessageW(runBox, CB_SETCURSEL, static_cast<WPARAM>(selected), 0);
 			}
+
 			const int ri = Index(runBox);
 			scope.run = ri >= 0 && static_cast<std::size_t>(ri) < runs.size() ? runs[static_cast<std::size_t>(ri)].key : "";
-			if (level <= 1) { cases = data.Cases(scope.run);SetOptions(caseBox, cases, scope.test); }
+			if (level <= 1) { cases = data.Cases(scope.run); SetOptions(caseBox, cases, scope.test); }
 			scope.test = Selected(caseBox, cases);
 			if (level <= 2) { sizes = data.Sizes(scope);SetOptions(sizeBox, sizes, scope.size); }
 			scope.size = Selected(sizeBox, sizes);
 			if (level <= 3) { metrics = data.Metrics(scope);SetOptions(metricBox, metrics, metric); }
 			metric = Selected(metricBox, metrics);
 			summaries = data.Summaries(scope); series = data.Samples(scope, metric);
-			status = std::to_wstring(data.SummaryCount()) + L" summary rows |  " + std::to_wstring(data.SampleCount()) + L" samples  |  " + std::to_wstring(runs.size()) + L"run.condition groups  |  Drop CSV files here";
+			status = std::to_wstring(data.SummaryCount()) + L" summary rows  |  " + std::to_wstring(data.SampleCount()) + L" samples  |  " + std::to_wstring(runs.size()) + L"run/condition groups  |  Drop CSV files here";
 			SetWindowTextW(contextBox, ri >= 0 ? Wide(runs[static_cast<std::size_t>(ri)].description).c_str() : L"Open summary.csv, samples.csv, or both. Ctrl+O opens files.");
 			EnableWindow(exportButton, !summaries.empty()); UpdateTable();
 			hovered.clear(); hover.clear(); InvalidateRect(window, nullptr, FALSE);
@@ -250,7 +260,7 @@ namespace
 				crt > 0 ? bench::Format(s.median / crt) + "x" : "n/a",std::to_string(s.sampleCount),s.fromSummary ? "summary" : "from samples" };
 				for (std::size_t j = 0;j < values.size();++j)
 				{
-					auto text = Wide(values[j]); LVITEMW sub{}; sub.iSubItem = static_cast<int>(j + i);sub.pszText = text.data();
+					auto text = Wide(values[j]); LVITEMW sub{}; sub.iSubItem = static_cast<int>(j + 1);sub.pszText = text.data();
 					SendMessageW(table, LVM_SETITEMTEXTW, static_cast<WPARAM>(i), reinterpret_cast<LPARAM>(&sub));
 				}
 			}
@@ -305,11 +315,11 @@ namespace
 			if (summaries.empty()) { RECT r = panel; r.top += Px(65); Text(dc, r, L"Open CSV files to view results. ", Muted, DT_CENTER | DT_VCENTER | DT_SINGLELINE); return; }
 			const bool log = SendMessageW(logBox, BM_GETCHECK, 0, 0) == BST_CHECKED;
 			std::vector<double> values;
-			if (samples) { for (const auto& s : summaries) { values.push_back(s.minimum); values.push_back(s.median); values.push_back(s.maximum); } }
+			if (samples) { for (const auto& s : series) for (const auto& p : s.points) if (p.value) values.push_back(*p.value); }
 			else { for (const auto& s : summaries) { values.push_back(s.minimum); values.push_back(s.median); values.push_back(s.maximum); } }
 			if (values.empty()) { RECT r = panel; r.top += Px(65); Text(dc, r, L"No samples for this metric / selection. ", Muted, DT_CENTER | DT_VCENTER | DT_SINGLELINE); return; }
 			bench::ChartScale scale(values, log);
-			RECT plot{ panel.right + Px(113), panel.top + Px(101), panel.right - Px(24), panel.bottom - Px(39) };
+			RECT plot{ panel.left + Px(113), panel.top + Px(101), panel.right - Px(24), panel.bottom - Px(39) };
 			if (plot.right <= plot.left || plot.bottom <= plot.top) return;
 			GridLines(dc, plot, scale);
 			auto y = [&](double v) {return plot.bottom - static_cast<int>(*scale.Fraction(v) * (plot.bottom - plot.top));};
@@ -521,8 +531,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
 	{
 		const DWORD error_code = h ? ERROR_SUCCESS : GetLastError();
 		wchar_t error_string[64];
-		swprintf_s(error_string, _countof(error_string), L"CreateWindowExW 실패 : %lu", error_code);
-		MessageBoxW(nullptr, error_string, L"창 생성 오류", MB_OK | MB_ICONERROR);
+		swprintf_s(error_string, _countof(error_string), L"CreateWindowExW is Failed : %lu", error_code);
+		MessageBoxW(nullptr, error_string, L"Fatal : Initialize is Failed", MB_OK | MB_ICONERROR);
 		return 1;
 	}
 
@@ -540,7 +550,9 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
 			app.Load(paths);
 	}
 	MSG message{};
+
 	int result;
+
 	while ((result = static_cast<int>(GetMessageW(&message, nullptr, 0, 0))) > 0)
 	{
 		if (message.message == WM_KEYDOWN && message.wParam == '0' && (GetKeyState(VK_CONTROL) & 0x8000))

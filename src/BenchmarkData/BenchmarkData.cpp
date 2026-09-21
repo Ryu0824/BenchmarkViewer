@@ -21,12 +21,16 @@ namespace bench
 		};
 
 		std::string Pack(std::string_view s) { return std::to_string(s.size()) + ':' + std::string(s); }
+
+		// Remove side margins
 		std::string_view Trim(std::string_view s)
 		{
 			while (!s.empty() && (s.front() == ' ' || s.front() == '\t'))s.remove_prefix(1);
 			while (!s.empty() && (s.back() == ' ' || s.back() == '\t'))s.remove_suffix(1);
 			return s;
-		}
+		}	
+
+		// Extract Number
 		std::optional<double> Numeric(std::string_view s)
 		{
 			s = Trim(s);
@@ -36,15 +40,21 @@ namespace bench
 			if (ec != std::errc{} || end != s.data() + s.size() || !std::isfinite(v))return{};
 			return v;
 		}
+
+		// Status is check
 		bool IsStat(const std::string& key)
 		{
 			return key.starts_with("probe_") || key.starts_with("after_") || key.starts_with("timed_page_");
 		}
+
+		// Available Stat check
 		std::optional<double> Metric(const Row& row, const std::string& key)
 		{
 			if (IsStat(key) && row.Get("stats_available") != "1")return{};
 			return row.Number(key);
 		}
+
+
 		std::string Quote(std::string s)
 		{
 			if (!s.empty() && (s[0] == '=' || s[0] == '+' || s[0] == '-' || s[0] == '@' || s[0] == '\t' || s[0] == '\r')) s.insert(s.begin(), '\'');
@@ -52,39 +62,50 @@ namespace bench
 			for (char c : s) { out += c; if (c == '"')out += '"'; }
 			return out + '"';
 		}
+
 		std::string Exact(double v)
 		{
 			std::ostringstream out; out.imbue(std::locale::classic());
-			out << std::setprecision(17) << v;return out.str();
+			out << std::setprecision(17) << v; return out.str();
 		}
 	}
 
 	const std::string& Row::Get(const std::string& key) const
 	{
 		static const std::string empty;
-		auto it = fields.find(key);return it == fields.end() ? empty : it->second;
+		auto iter = fields.find(key); 
+		return iter == fields.end() ? empty : iter->second;
 	}
+
 	std::optional<double>Row::Number(const std::string& key) const { return Numeric(Get(key)); }
+
 	std::string Row::RunKey() const
 	{
 		std::string out;
 		for (auto key : RunFiels) out += Pack(Get(key));
 		return out;
 	}
+
 	std::vector<Row> ParseCsv(std::string_view text)
 	{
-		if (text.starts_with("\xEF\xBB\xBF")) text.remove_prefix(3);
-		if (text.find('\0') != std::string_view::npos) throw std::runtime_error("NULL byte detected. SAVE CSV as UTF-8, not UTF-16.");
-		enum class State { Start, Plain, Quoted, AfterQuote } state = State::Start;
+		if (text.starts_with("\xEF\xBB\xBF")) 
+			text.remove_prefix(3);
+
+		if (text.find('\0') != std::string_view::npos) 
+			throw std::runtime_error("NULL byte detected. SAVE CSV as UTF-8, not UTF-16.");
+		 
+		enum class State { Start, Plain, Quoted, AfterQuote } 
+		state = State::Start;
+
 		std::vector<std::vector<std::string>> table;
 		std::vector<std::string> row;
 		std::string cell;
-		auto finishRow = [&]
-			{
+		auto finishRow = [&]{
 				row.push_back(std::move(cell)); cell.clear();
 				if (std::any_of(row.begin(), row.end(), [](const auto& v) {return !Trim(v).empty();})) table.push_back(std::move(row));
 				row.clear();
 			};
+
 		for (std::size_t i = 0;i < text.size();++i)
 		{
 			char c = text[i];
@@ -99,6 +120,7 @@ namespace bench
 					cell += c;
 				continue;
 			}
+
 			if (c == ',' || c == '\r' || c == '\n')
 			{
 				if (c == ',') { row.push_back(std::move(cell));cell.clear(); }
@@ -106,7 +128,10 @@ namespace bench
 				state = State::Start;
 				continue;
 			}
-			if (state == State::AfterQuote) throw std::runtime_error("Unexpected character after closing CSV quote");
+
+			if (state == State::AfterQuote) 
+				throw std::runtime_error("Unexpected character after closing CSV quote");
+
 			if (c == '"')
 			{
 				if (state != State::Start)
@@ -119,37 +144,65 @@ namespace bench
 				state = State::Plain;
 			}
 		}
+
 		if (state == State::Quoted) throw std::runtime_error("Unclosed CSV quote");
+
 		finishRow();
-		if (table.size() < 2)throw std::runtime_error("CSV needs a header and at least one data record.");
+
+		if (table.size() < 2)
+			throw std::runtime_error("CSV needs a header and at least one data record.");
+
 		auto header = table.front();
+
 		std::set<std::string> names;
 		for (auto& h : header)
 		{
 			h = std::string(Trim(h));
-			if (h.empty() || !names.insert(h).second) throw std::runtime_error("Empty or duplicate CSV header");
+			if (h.empty() || !names.insert(h).second) 
+				throw std::runtime_error("Empty or duplicate CSV header");
 		}
+
 		bool summary = names.contains("median_ns_per_pair");
+
 		for (auto k : { "run_id","case","sizes","backend" })
-			if (!names.contains(k)) throw std::runtime_error(std::string("Missing column: ") + k);
+		{
+			if (!names.contains(k)) 
+				throw std::runtime_error(std::string("Missing column: ") + k);
+		}
+
 		std::vector<std::string> numeric = summary
 			? std::vector<std::string>{"min_ns_per_pair", "median_ns_per_pair", "max_ns_per_pair"}
-		: std::vector<std::string>{ "round","ns_per_pair" };
-		for (const auto& k : numeric) if (!names.contains(k)) throw std::runtime_error("Missing column" + k);
+			: std::vector<std::string>{"round", "ns_per_pair" };
+
+		for (const auto& k : numeric) 
+			if (!names.contains(k)) 
+				throw std::runtime_error("Missing column" + k);
+
 		std::vector<Row> out;
+
+		// Header Exclude
 		for (std::size_t i = 1;i < table.size();++i)
 		{
 			const auto prefix = "Record" + std::to_string(i + 1) + ": ";
-			if (table[i].size() != header.size()) throw std::runtime_error(prefix + "column count mismatch");
+
+			if (table[i].size() != header.size()) 
+				throw std::runtime_error(prefix + "column count mismatch");
+
 			Row r; r.summary = summary;
-			for (std::size_t j = 0;j < header.size();++j) r.fields.emplace(header[j], table[i][j]);
+			for (std::size_t j = 0;j < header.size();++j) 
+				r.fields.emplace(header[j], table[i][j]);
+
 			for (auto k : { "run_id","case","sizes","backend" })
-				if (Trim(r.Get(k)).empty()) throw std::runtime_error(prefix + "empty key: " + k);
+				if (Trim(r.Get(k)).empty()) 
+					throw std::runtime_error(prefix + "empty key: " + k);
+
 			for (const auto& k : numeric)
 			{
 				auto n = r.Number(k);
-				if (!n || *n < 0)throw std::runtime_error(prefix + "invalid nonnegative number: " + k);
+				if (!n || *n < 0)
+					throw std::runtime_error(prefix + "invalid nonnegative number: " + k);
 			}
+
 			if (!summary)
 			{
 				const double round = *r.Number("round");
@@ -159,20 +212,30 @@ namespace bench
 			else if (*r.Number("min_ns_per_pair") > *r.Number("median_ns_per_pair") ||
 				*r.Number("median_ns_per_pair") > *r.Number("max_ns_per_pair"))
 				throw std::runtime_error(prefix + "expectd min <= median <= max.");
+
 			out.push_back(std::move(r));
 		}
 		return out;
 	}
 
+	// File Context Copy
 	std::vector<Row> ReadCsv(const std::filesystem::path& path)
 	{
-		if (std::filesystem::file_size(path) > 64ull * 1024 * 1024) throw std::runtime_error("CSV exceeds the 64 MiB file limit.");
+		if (std::filesystem::file_size(path) > 64ull * 1024 * 1024) 
+			throw std::runtime_error("CSV exceeds the 64 MiB file limit.");
+
 		std::ifstream in(path, std::ios::binary);
-		if (!in)throw std::runtime_error("Cannot open file.");
+		if (!in)
+			throw std::runtime_error("Cannot open file.");
+		
 		std::string text{ std::istreambuf_iterator<char>(in), std::istreambuf_iterator<char>() };
-		if (in.bad()) throw std::runtime_error("Failed to read file");
+		
+		if (in.bad()) 
+			throw std::runtime_error("Failed to read file");
+
 		return ParseCsv(text);
 	}
+
 	std::string Format(double value)
 	{
 		std::ostringstream out; out.imbue(std::locale::classic());
@@ -181,6 +244,7 @@ namespace bench
 		out << std::setprecision(3) << value;
 		return out.str();
 	}
+
 	std::string MetricUnit(const std::string& m)
 	{
 		if (m == "ns_per_pair") return "ns/pair";
@@ -189,6 +253,7 @@ namespace bench
 			m.find("data") != std::string::npos || m.find("metadata") != std::string::npos)return "bytes";
 		return "count";
 	}
+
 	void Dataset::Add(const std::vector<Row>& _rows)
 	{
 		for (const auto& r : _rows)
@@ -198,17 +263,19 @@ namespace bench
 			this->rows.insert_or_assign(key, r);
 		}
 	}
+
 	std::size_t Dataset::SummaryCount() const
 	{
 		return static_cast<std::size_t>(std::count_if(rows.begin(), rows.end(), [](const auto& p) {return p.second.summary;}));
 	}
+
 	std::size_t Dataset::SampleCount() const { return rows.size() - SummaryCount(); }
+
 	std::vector<Run> Dataset::Runs() const
 	{
 		std::map<std::string, Run> result;
 		for (const auto& [key, r] : rows)
 		{
-			(void)key;
 			auto run = r.RunKey();
 			if (result.contains(run)) continue;
 			std::string desc;
@@ -216,10 +283,11 @@ namespace bench
 			result.emplace(run, Run{ run, r.Get("run_id") + " | " + r.Get("platform") + " | " + r.Get("compiler") + " | slots=" + r.Get("slots") + " | pairs=" + r.Get("allocation_pairs"), desc });
 		}
 		std::vector<Run> out;
-		for (const auto& [key, r] : result) { (void)key;out.push_back(r); }
+		for (const auto& [key, r] : result) { out.push_back(r); }
 		for (std::size_t i = 0;i < out.size();++i) out[i].label = '[' + std::to_string(i + 1) + "] " + out[i].label;
 		return out;
 	}
+
 	std::vector<const Row*> Dataset::Select(const Scope& s)const
 	{
 		std::vector<const Row*> out;
@@ -230,12 +298,19 @@ namespace bench
 		}
 		return out;
 	}
+
 	std::vector<std::string> Dataset::Cases(const std::string& run) const
 	{
 		std::set<std::string> result;
-		for (const auto& [key, r] : rows) { (void)key;if (r.RunKey() == run) result.insert(r.Get("case")); }
+		for (const auto& [key, r] : rows) 
+		{ 
+			if (r.RunKey() == run) 
+				result.insert(r.Get("case")); 
+		}
+
 		return { result.begin(), result.end() };
 	}
+
 	std::vector<std::string> Dataset::Sizes(const Scope& s) const
 	{
 		std::set<std::string> result;
@@ -250,6 +325,7 @@ namespace bench
 			});
 		return out;
 	}
+
 	std::vector<std::string> Dataset::Metrics(const Scope& s) const
 	{
 		std::set<std::string> result;
@@ -261,6 +337,7 @@ namespace bench
 			}
 		std::vector<std::string> out{ "ns_per_pair" }; out.insert(out.end(), result.begin(), result.end());return out;
 	}
+
 	std::vector<Summary> Dataset::Summaries(const Scope& s) const
 	{
 		std::map<std::string, const Row*> summary;
