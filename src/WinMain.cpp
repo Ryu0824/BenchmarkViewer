@@ -26,7 +26,7 @@
 
 namespace
 {
-	constexpr COLORREF Background = RGB(14, 22, 36), Panel = RGB(23, 35, 53);
+	constexpr COLORREF Background = RGB(255, 255, 255), Panel = RGB(23, 35, 53);
 	constexpr COLORREF Foreground = RGB(226, 234, 247), Muted = RGB(160, 178, 203), Grid = RGB(53, 70, 93);
 	constexpr std::array<COLORREF, 6> Colors = { RGB(83,213,193),RGB(119,166,255),RGB(255,185,105),RGB(214,148,244),RGB(255,130,156),RGB(180,217,104) };
 	enum Id { Open = 101, Clear, Export, Help, RunSelect, CaseSelect, SizeSelect, MetricSelect, LogScale, DataTable };
@@ -123,6 +123,7 @@ namespace
 
 	private:
 		HWND runBox{}, caseBox{}, sizeBox{}, metricBox{}, logBox{}, table{}, contextBox{};
+		HWND resultGraphPanel{};
 		HWND openButton{}, clearButton{}, exportButton{}, helpButton{};
 		HWND runLabel{}, caseLabel{}, sizeLabel{}, metricLabel{};
 		HFONT font{}, titleFont{};HBRUSH backgroundBrush{};
@@ -158,6 +159,9 @@ namespace
 			font = CreateFontW(-Px(14), 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
 			titleFont = CreateFontW(-Px(23), 0, 0, 0, FW_DEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
 			backgroundBrush = CreateSolidBrush(Background);
+
+			// Result Panel
+			resultGraphPanel = Control(L"GraphResultPanel", L"Comparison performance name", WS_TABSTOP, 0);
 			openButton = Control(L"BUTTON", L"Open CSV...", WS_TABSTOP, Open);
 			clearButton = Control(L"BUTTON", L"Clear", WS_TABSTOP, Clear);
 			exportButton = Control(L"BUTTON", L"Export table...", WS_TABSTOP, Export);
