@@ -162,6 +162,8 @@ namespace
 
 			// Result Panel
 			resultGraphPanel = Control(L"GraphResultPanel", L"Comparison performance name", WS_TABSTOP, 0);
+
+			// Panel ver
 			openButton = Control(L"BUTTON", L"Open CSV...", WS_TABSTOP, Open);
 			clearButton = Control(L"BUTTON", L"Clear", WS_TABSTOP, Clear);
 			exportButton = Control(L"BUTTON", L"Export table...", WS_TABSTOP, Export);
