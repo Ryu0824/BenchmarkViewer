@@ -160,10 +160,10 @@ namespace
 			titleFont = CreateFontW(-Px(23), 0, 0, 0, FW_DEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
 			backgroundBrush = CreateSolidBrush(Background);
 
+			// Panel Control
 			// Result Panel
 			resultGraphPanel = Control(L"GraphResultPanel", L"Comparison performance name", WS_TABSTOP, 0);
 
-			// Panel ver
 			openButton = Control(L"BUTTON", L"Open CSV...", WS_TABSTOP, Open);
 			clearButton = Control(L"BUTTON", L"Clear", WS_TABSTOP, Clear);
 			exportButton = Control(L"BUTTON", L"Export table...", WS_TABSTOP, Export);
