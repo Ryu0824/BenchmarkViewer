@@ -161,7 +161,10 @@ namespace
 			backgroundBrush = CreateSolidBrush(Background);
 
 			// Panel Control
+			// System Env Paenl
+			// Allocator Perf List Panel
 			// Result Panel
+			// 
 			resultGraphPanel = Control(L"GraphResultPanel", L"Comparison performance name", WS_TABSTOP, 0);
 
 			openButton = Control(L"BUTTON", L"Open CSV...", WS_TABSTOP, Open);
