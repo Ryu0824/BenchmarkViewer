@@ -123,7 +123,7 @@ namespace
 
 	private:
 		HWND runBox{}, caseBox{}, sizeBox{}, metricBox{}, logBox{}, table{}, contextBox{};
-		HWND resultGraphPanel{};
+		HWND resultGraphPanel{}, systemEnvPanel{};
 		HWND openButton{}, clearButton{}, exportButton{}, helpButton{};
 		HWND runLabel{}, caseLabel{}, sizeLabel{}, metricLabel{};
 		HFONT font{}, titleFont{};HBRUSH backgroundBrush{};
@@ -162,10 +162,14 @@ namespace
 
 			// Panel Control
 			// System Env Paenl
+			
+
 			// Allocator Perf List Panel
 			// Result Panel
 			// 
 			resultGraphPanel = Control(L"GraphResultPanel", L"Comparison performance name", WS_TABSTOP, 0);
+
+			systemEnvPanel = Control(L"systemEnvPanel", L"system Enviroment Panel", WS_TABSTOP, 0);
 
 			openButton = Control(L"BUTTON", L"Open CSV...", WS_TABSTOP, Open);
 			clearButton = Control(L"BUTTON", L"Clear", WS_TABSTOP, Clear);
