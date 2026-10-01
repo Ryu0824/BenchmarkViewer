@@ -29,7 +29,7 @@ namespace
 	constexpr COLORREF Background = RGB(255, 255, 255), Panel = RGB(23, 35, 53);
 	constexpr COLORREF Foreground = RGB(226, 234, 247), Muted = RGB(160, 178, 203), Grid = RGB(53, 70, 93);
 	constexpr std::array<COLORREF, 6> Colors = { RGB(83,213,193),RGB(119,166,255),RGB(255,185,105),RGB(214,148,244),RGB(255,130,156),RGB(180,217,104) };
-	enum Id { Open = 101, Clear, Export, Help, RunSelect, CaseSelect, SizeSelect, MetricSelect, LogScale, DataTable};
+	enum Id { Open = 101, Clear, Export, Help, RunSelect, CaseSelect, SizeSelect, MetricSelect, LogScale, DataTable,DataSelect};
 	std::wstring Wide(const std::string& text)
 	{
 		if (text.empty())return{};
