@@ -160,19 +160,6 @@ namespace
 			titleFont = CreateFontW(-Px(23), 0, 0, 0, FW_DEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
 			backgroundBrush = CreateSolidBrush(Background);
 
-			// Panel Control
-			// System Env Paenl
-			
-
-			// Allocator Perf List Panel
-			// Result Panel
-			// 
-			resultGraphPanel = Control(L"GraphResultPanel", L"Comparison performance name", WS_TABSTOP, 0);
-
-			systemEnvPanel = Control(L"systemEnvPanel", L"system Enviroment Panel", WS_TABSTOP, 0);
-
-			allocatorRerfListPanel = Control(L"allocatorPerfListPanel", L"Allocator Performance List Panel", WS_TABSTOP, 0);
-
 			openButton = Control(L"BUTTON", L"Open CSV...", WS_TABSTOP, Open);
 			clearButton = Control(L"BUTTON", L"Clear", WS_TABSTOP, Clear);
 			exportButton = Control(L"BUTTON", L"Export table...", WS_TABSTOP, Export);
@@ -286,7 +273,7 @@ namespace
 			if (!table) return;
 			RECT client{}; GetClientRect(window, &client); int width = client.right, height = client.bottom;
 			auto move = [&](HWND h, int x, int y, int w, int hh) {MoveWindow(h, Px(x), Px(y), Px(w), Px(hh), TRUE);};
-			move(openButton, 24, 62, 118, 30); move(clearButton, 152, 62, 80, 30);
+			move(openButton, 90, 62, 118, 30); move(clearButton, 152, 62, 80, 30);
 			move(exportButton, 242, 62, 132, 30); move(helpButton, 384, 62, 75, 30);
 			int logicalWidth = static_cast<int>(width / dpiScale), runWidth = std::max(260, logicalWidth - 716);
 			move(runLabel, 24, 104, runWidth, 20); move(runBox, 24, 128, runWidth, 320);
