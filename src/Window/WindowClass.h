@@ -1,12 +1,15 @@
 #pragma once
 
+#include "../Viewer/Viewer.h"
+
 class WindowClass
 {
 public:
-	void Begin();
+	void Begin(HINSTANCE Instance);
 	void Update();
 	void End();
 
 private:
-
+	HWND WindowHandle;
+	//Viewer* ViwerObject;
 };

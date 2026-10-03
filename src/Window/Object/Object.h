@@ -6,10 +6,10 @@
 class Object
 {
 public:
-	void Begin() = 0;
-	void Update() = 0;
-	void Render() {};
-	void End() = 0;
+	void Begin();
+	void Update();
+	void Render();
+	void End();
 
 	template<typename T, typename... Args>
 	Component* AddComponent(Args&&... args)
@@ -25,9 +25,17 @@ public:
 		return Comps[(uint32_t)Type];
 	}
 
+	template<typename T>
 	void RemoveComponent()
 	{
+		ComponentType Type = GetCompType<T>();
+		Component* comp = Comps[(uint32_t)Type];
 
+		if (comp)
+		{
+			delete comp;
+			Comps[(uint32_t)Type] = nullptr;
+		}
 	}
 
 private:

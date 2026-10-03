@@ -10,7 +10,14 @@ void Button::Update()
 	// Mosue Button In
 	if (Interactive())
 	{
-
+		if (State == ButtonState::None || State == ButtonState::OnMouseExit)
+		{
+			State = ButtonState::OnMouseEnter
+		}
+		else if (State == ButtonState::OnMouseEnter)
+		{
+			State = ButtonState::OnMouseOver;
+		}
 	}
 	else
 	{
@@ -30,4 +37,5 @@ void Button::End()
 
 bool Button::Interactive()
 {
+
 }
