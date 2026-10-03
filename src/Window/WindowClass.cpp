@@ -1,25 +1,15 @@
 #include "WindowClass.h"
-#include <Windows.h>
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
-	Viewer* app = reinterpret_cast<Viewer*>(GetWindowLongPtrW(h, GWLP_USERDATA));
-	if (m == WM_NCCREATE)
+	switch (m)
 	{
-		app = static_cast<Viewer*>(reinterpret_cast<CREATESTRUCTW*>(l)->lpCreateParams); app->window = h;
-		SetWindowLongPtrW(h, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(app));
-	}
-	try
-	{
-		return app ? app->Message(m, w, l) : DefWindowProcW(h, m, w, l);
-	}
-	catch (const std::exception& e)
-	{
-		MessageBoxW(h, Wide(e.what()).c_str(), L"Benchmark Viewer error", MB_OK | MB_ICONERROR);
-		if (m == WM_CREATE)
-			return -1;
+	case WM_DESTROY:
+		PostQuitMessage(0);
 		return 0;
 	}
+
+	return DefWindowProcW(h, m, w, l);
 }
 
 void WindowClass::Begin(HINSTANCE Instance)
@@ -35,7 +25,7 @@ void WindowClass::Begin(HINSTANCE Instance)
 
 	if (!RegisterClassExW(&wc))
 	{
-		return 1;
+		return;
 	}
 
 	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);

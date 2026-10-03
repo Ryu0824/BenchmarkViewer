@@ -11,7 +11,9 @@ function(configure_target target)
 endfunction()
 
 if(WIN32)
-	add_executable(BenchmarkViewer WIN32 src/WinMain.cpp)
+	add_executable(BenchmarkViewer WIN32 
+		src/WinMain.cpp 
+		src/Window/WindowClass.cpp)
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
 	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdi32 comdlg32 comctl32 shell32)
 	configure_target(BenchmarkViewer)

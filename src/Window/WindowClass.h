@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../Viewer/Viewer.h"
+//#include "../Viewer/Viewer.h"
+
+#include <Windows.h>
 
 class WindowClass
 {
