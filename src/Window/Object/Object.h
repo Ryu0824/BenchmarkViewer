@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <Windows.h>
 #include "../Component/Component.h"
 
 class Object
@@ -8,7 +9,7 @@ class Object
 public:
 	void Begin();
 	void Update();
-	void Render();
+	void Render(HDC dc);
 	void End();
 
 	template<typename T, typename... Args>

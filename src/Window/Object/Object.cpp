@@ -22,15 +22,18 @@ void Object::Update()
 	}
 }
 
-void Object::Render()
+void Object::Render(HDC dc)
 {
-	for (uint32_t i = 0;i < (uint32_t)ComponentType::End;++i)
+	if (!dc)return;
+
+	Rectangle(dc, 20, 50, 200, 130);
+	/*for (uint32_t i = 0;i < (uint32_t)ComponentType::End;++i)
 	{
 		if (Comps[i])
 		{
 			Comps[i]->Render();
 		}
-	}
+	}*/
 }
 
 void Object::End()

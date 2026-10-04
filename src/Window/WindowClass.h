@@ -1,6 +1,6 @@
 #pragma once
 
-//#include "../Viewer/Viewer.h"
+#include "../Viewer/Viewer.h"
 
 #include <Windows.h>
 
@@ -13,5 +13,6 @@ public:
 
 private:
 	HWND WindowHandle;
-	Viewer* ViwerObject;
+	HDC DeviceContext;
+	Viewer ViewInstance;
 };

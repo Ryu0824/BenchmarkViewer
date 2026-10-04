@@ -31,14 +31,22 @@ void WindowClass::Begin(HINSTANCE Instance)
 	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);
 
 	ShowWindow(WindowHandle, SW_SHOW);
+
+	DeviceContext = GetDC(WindowHandle);
+
+	ViewInstance.Begin();
 }
 
 void WindowClass::Update()
 {
+	ViewInstance.Update();
 
+	ViewInstance.Render(DeviceContext);
 }
 
 void WindowClass::End()
 {
+	ReleaseDC(WindowHandle, DeviceContext);
 
+	ViewInstance.End();
 }
