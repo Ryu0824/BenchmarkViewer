@@ -13,5 +13,5 @@ public:
 
 private:
 	HWND WindowHandle;
-	//Viewer* ViwerObject;
+	Viewer* ViwerObject;
 };
