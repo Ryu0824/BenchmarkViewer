@@ -22,7 +22,7 @@ void Viewer::Render(HDC dc)
 {
 	for (auto object : Objects)
 	{
-		if (object)
+		if(object)
 			object->Render(dc);
 	}
 }
@@ -31,7 +31,7 @@ void Viewer::End()
 {
 	for (auto object : Objects)
 	{
-		if (object)
+		if(object)
 			object->End();
 	}
 }
