@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "../Manager/InputManager.h"
 
 void Button::Begin()
 {
@@ -37,5 +38,7 @@ void Button::End()
 
 bool Button::Interactive()
 {
+	POINT MousePos = InputManager::GetInstance().GetMousePosition();
+
 
 }

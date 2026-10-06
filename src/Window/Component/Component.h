@@ -21,6 +21,12 @@ public:
 	virtual void Update() = 0;
 	virtual void Render() {};
 	virtual void End() = 0;
+
+	void SetOwner(Object* owner) { Owner = owner; }
+	Object* GetOwner() const { return Owner;}
+
+private:
+	Object* Owner;
 };
 
 template<typename T>

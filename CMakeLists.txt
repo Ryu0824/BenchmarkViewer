@@ -17,7 +17,7 @@ if(WIN32)
 		src/Viewer/Viewer.cpp
 		src/Window/Object/Object.cpp
 		src/Window/Component/Component.cpp
-	)
+		src/Window/Manager/InputManager.cpp)
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
 	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdi32 comdlg32 comctl32 shell32)
 	configure_target(BenchmarkViewer)

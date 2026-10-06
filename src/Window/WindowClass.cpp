@@ -1,4 +1,5 @@
 #include "WindowClass.h"
+#include "Manager/InputManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -39,6 +40,8 @@ void WindowClass::Begin(HINSTANCE Instance)
 
 void WindowClass::Update()
 {
+	InputManager::GetInstance().Update(WindowHandle);
+
 	ViewInstance.Update();
 
 	ViewInstance.Render(DeviceContext);
