@@ -1,6 +1,8 @@
 #pragma once
 #include <concepts>
 
+class Object;
+
 enum class ComponentType
 {
 	None,

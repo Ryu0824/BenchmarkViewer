@@ -1,5 +1,6 @@
 #include "WindowClass.h"
 #include "Manager/InputManager.h"
+#include "Manager/ConsoleManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -15,6 +16,10 @@ LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 
 void WindowClass::Begin(HINSTANCE Instance)
 {
+#ifdef _DEBUG
+	ConsoleManager::GetInstance().Begin();
+#endif
+
 	SetProcessDPIAware();
 
 	WNDCLASSEXW wc{};
