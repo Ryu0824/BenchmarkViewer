@@ -2,6 +2,7 @@
 
 #ifdef _DEBUG
 #include <iostream>
+#include "TimeManager.h"
 #endif
 
 void InputManager::Begin()
@@ -26,7 +27,15 @@ void InputManager::CalculateMousePosition(HWND hWnd)
 		if (ScreenToClient(hWnd, &ClientMousePosition))
 		{
 #ifdef _DEBUG
-			printf("MousePos(x, y) : %d, %d", ClientMousePosition.x, ClientMousePosition.y);
+			static float Duration = 0.0f;
+
+			Duration += TimeManager::GetInstance().GetDeltaTime();
+
+			if (Duration >= 5.0f)
+			{
+				printf("MousePos(x, y) : %d, %d\n", ClientMousePosition.x, ClientMousePosition.y);
+				Duration = 0.0f;
+			}
 #endif
 		}
 	}

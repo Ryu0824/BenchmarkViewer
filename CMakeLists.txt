@@ -19,6 +19,7 @@ if(WIN32)
 		src/Window/Component/Component.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
+		src/Window/Manager/TimeManager.cpp
 	)
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
 	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdi32 comdlg32 comctl32 shell32)

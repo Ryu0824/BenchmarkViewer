@@ -1,6 +1,7 @@
 #include "WindowClass.h"
 #include "Manager/InputManager.h"
 #include "Manager/ConsoleManager.h"
+#include "Manager/TimeManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -19,6 +20,8 @@ void WindowClass::Begin(HINSTANCE Instance)
 #ifdef _DEBUG
 	ConsoleManager::GetInstance().Begin();
 #endif
+
+	TimeManager::GetInstance().Begin();
 
 	SetProcessDPIAware();
 
@@ -45,6 +48,8 @@ void WindowClass::Begin(HINSTANCE Instance)
 
 void WindowClass::Update()
 {
+	TimeManager::GetInstance().Update();
+
 	InputManager::GetInstance().Update(WindowHandle);
 
 	ViewInstance.Update();
