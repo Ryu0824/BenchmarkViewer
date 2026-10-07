@@ -15,6 +15,9 @@ enum class ButtonState
 class Button : public Component
 {
 public:
+	Button() = default;
+	~Button() = default;
+
 	virtual void Begin() override;
 	virtual void Update() override;
 	virtual void Render() override;

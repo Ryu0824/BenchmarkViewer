@@ -17,6 +17,8 @@ if(WIN32)
 		src/Viewer/Viewer.cpp
 		src/Window/Object/Object.cpp
 		src/Window/Component/Component.cpp
+		src/Window/Component/Transform.cpp
+		src/Window/Component/Button.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
 		src/Window/Manager/TimeManager.cpp

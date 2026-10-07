@@ -1,12 +1,12 @@
 #pragma once
 #include <concepts>
-
-class Object;
+#include "../Object/Object.h"
 
 enum class ComponentType
 {
 	None,
 	Button,
+	Transform,
 	End,
 };
 

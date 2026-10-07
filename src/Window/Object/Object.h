@@ -39,6 +39,21 @@ public:
 		}
 	}
 
+	template<typename T>
+	T* GetComponent()
+	{
+		ComponentType Type = GetCompType<T>();
+
+		Component* comp = Comps[(uint32_t)Type];
+
+		if (comp)
+		{
+			return static_cast<T*>(comp);
+		}
+
+		return nullptr;
+	}
+
 private:
 	Component* Comps[(uint32_t)ComponentType::End] = {};
 };
