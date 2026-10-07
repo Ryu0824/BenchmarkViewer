@@ -13,17 +13,18 @@ public:
 	void End();
 
 	template<typename T, typename... Args>
-	Component* AddComponent(Args&&... args)
+	T* AddComponent(Args&&... args)
 	{
 		ComponentType Type = GetCompType<T>();
-		static_assert((uint32_t)Type < (uint32_t)ComponentType::End, "This is Not Component!!");
+		//static_assert((uint32_t)Type < (uint32_t)ComponentType::End, "This is Not Component!!");
 
-		if (Comps[(uint32_t)Type] != nullptr)
+		if (Comps[(uint32_t)Type] == nullptr)
 		{
 			Comps[(uint32_t)Type] = new T(std::forward<Args>(args)...);
+			Comps[(uint32_t)Type]->SetOwner(this);
 		}
 
-		return Comps[(uint32_t)Type];
+		return static_cast<T*>(Comps[(uint32_t)Type]);
 	}
 
 	template<typename T>

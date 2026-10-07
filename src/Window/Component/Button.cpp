@@ -1,6 +1,7 @@
 #include "Button.h"
 #include "../Manager/InputManager.h"
 #include "Transform.h"
+#include "../Object/Object.h"
 
 void Button::Begin()
 {
@@ -9,27 +10,51 @@ void Button::Begin()
 
 void Button::Update()
 {
-	// Mosue Button In
 	if (Interactive())
 	{
 		if (State == ButtonState::None || State == ButtonState::OnMouseExit)
 		{
 			State = ButtonState::OnMouseEnter;
+#ifdef _DEBUG
+			printf("OnMouseEnter!!\n");
+#endif 
 		}
 		else if (State == ButtonState::OnMouseEnter)
 		{
 			State = ButtonState::OnMouseOver;
 		}
+		else if (State == ButtonState::OnMouseOver)
+		{
+			// Click
+
+		}
+
 	}
 	else
 	{
-
+		if (State == ButtonState::None || State == ButtonState::OnMouseEnter || State == ButtonState::OnMouseOver || State == ButtonState::OnMouseUp)
+		{
+			State = ButtonState::OnMouseExit;
+#ifdef _DEBUG
+			printf("OnMouseExit!!\n");
+#endif 
+		}
 	}
 }
 
-void Button::Render()
+void Button::Render(HDC dc)
 {
+	Component::Render(dc);
 
+	Transform* TransformComp = GetOwner()->GetComponent<Transform>();
+	UMath::Vector2 Position = TransformComp->GetPosition();
+	UMath::Vector2 Scale = TransformComp->GetScale();
+
+	Rectangle(dc,
+		int(Position.x - Scale.x / 2.f),
+		int(Position.y - Scale.y / 2.f),
+		int(Position.x + Scale.x / 2.f),
+		int(Position.y + Scale.y / 2.f));
 }
 
 void Button::End()

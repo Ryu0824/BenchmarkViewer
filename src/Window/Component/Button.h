@@ -20,7 +20,7 @@ public:
 
 	virtual void Begin() override;
 	virtual void Update() override;
-	virtual void Render() override;
+	virtual void Render(HDC dc) override;
 	virtual void End() override;
 
 	ButtonState GetButtonState() const { return State; }

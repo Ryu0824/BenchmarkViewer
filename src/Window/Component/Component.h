@@ -1,6 +1,8 @@
 #pragma once
 #include <concepts>
-#include "../Object/Object.h"
+#include <Windows.h>
+
+class Object;
 
 enum class ComponentType
 {
@@ -21,7 +23,7 @@ class Component
 public:
 	virtual void Begin() = 0;
 	virtual void Update() = 0;
-	virtual void Render() {};
+	virtual void Render(HDC dc) {};
 	virtual void End() = 0;
 
 	void SetOwner(Object* owner) { Owner = owner; }

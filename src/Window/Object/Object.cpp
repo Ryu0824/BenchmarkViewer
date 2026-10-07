@@ -24,16 +24,13 @@ void Object::Update()
 
 void Object::Render(HDC dc)
 {
-	if (!dc)return;
-
-	Rectangle(dc, 20, 50, 200, 130);
-	/*for (uint32_t i = 0;i < (uint32_t)ComponentType::End;++i)
+	for (uint32_t i = 0;i < (uint32_t)ComponentType::End;++i)
 	{
 		if (Comps[i])
 		{
-			Comps[i]->Render();
+			Comps[i]->Render(dc);
 		}
-	}*/
+	}
 }
 
 void Object::End()

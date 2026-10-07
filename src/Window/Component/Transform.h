@@ -24,9 +24,6 @@ namespace UMath
 class Transform : public Component
 {
 public:
-	Transform() = default;
-	~Transform() = default;
-
 	virtual void Begin() override;
 	virtual void Update() override;
 	virtual void End() override;
@@ -46,7 +43,7 @@ public:
 	}
 
 private:
-	UMath::Vector2 Position = {};
-	UMath::Vector2 Scale = { 1.f,1.f };
-	UMath::Vector2 Rotation = {};
+	UMath::Vector2 Position;
+	UMath::Vector2 Scale;
+	UMath::Vector2 Rotation;
 };
