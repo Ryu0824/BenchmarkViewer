@@ -21,6 +21,7 @@ if(WIN32)
 		src/Window/Component/Button.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
+		src/Window/Manager/RenderManager.cpp
 		src/Window/Manager/TimeManager.cpp
 	)
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
