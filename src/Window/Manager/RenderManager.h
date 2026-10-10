@@ -17,7 +17,12 @@ public:
 	RenderManager& operator=(const RenderManager&) = delete;
 	RenderManager& operator=(RenderManager&&) = delete;
 
-	void Begin(HDC OriginalDC,int Width,int Height);
+	HDC GetBackDC() { return BackDC; }
+
+
+	void Init(HDC OriginalDC, int InWdith, int InHeight);
+
+	void Begin();
 	void Render(HDC dc);
 	void End();
 
@@ -25,6 +30,7 @@ private:
 	RenderManager() = default;
 	~RenderManager() = default;
 
+	HBRUSH BackGroundBrush;
 	HDC BackDC;
 	HBITMAP BackBitmap;
 	HGDIOBJ OldBitmap;

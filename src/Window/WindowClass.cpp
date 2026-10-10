@@ -2,6 +2,7 @@
 #include "Manager/InputManager.h"
 #include "Manager/ConsoleManager.h"
 #include "Manager/TimeManager.h"
+#include "Manager/RenderManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -44,6 +45,8 @@ void WindowClass::Begin(HINSTANCE Instance)
 	DeviceContext = GetDC(WindowHandle);
 
 	ViewInstance.Begin();
+
+	RenderManager::GetInstance().Init(DeviceContext, 1280, 720);
 }
 
 void WindowClass::Update()
@@ -54,11 +57,17 @@ void WindowClass::Update()
 
 	ViewInstance.Update();
 
-	ViewInstance.Render(DeviceContext);
+	RenderManager::GetInstance().Begin();
+
+	ViewInstance.Render(RenderManager::GetInstance().GetBackDC());
+
+	RenderManager::GetInstance().Render(DeviceContext);
 }
 
 void WindowClass::End()
 {
+	RenderManager::GetInstance().End();
+
 	ReleaseDC(WindowHandle, DeviceContext);
 
 	ViewInstance.End();
