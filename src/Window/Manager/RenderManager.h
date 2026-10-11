@@ -19,18 +19,21 @@ public:
 
 	HDC GetBackDC() { return BackDC; }
 
-
 	void Init(HDC OriginalDC, int InWdith, int InHeight);
 
-	void Begin();
+	void Begin(BYTE R, BYTE G, BYTE B);
 	void Render(HDC dc);
 	void End();
+
+	void Resize(HDC OriginalDC, int InWidth, int InHeight);
 
 private:
 	RenderManager() = default;
 	~RenderManager() = default;
 
-	HBRUSH BackGroundBrush;
+	HGDIOBJ BackGroundBrush;
+	COLORREF BackGroundColor;
+
 	HDC BackDC;
 	HBITMAP BackBitmap;
 	HGDIOBJ OldBitmap;

@@ -8,6 +8,22 @@ LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
 	switch (m)
 	{
+	case WM_SIZE:
+	{
+		if (w == SIZE_MINIMIZED)
+			return 0;
+
+		int Width = LOWORD(l);
+		int Height = HIWORD(l);
+
+		if (Width > 0 && Height > 0)
+		{
+			Resize(Width, Height);
+			RenderManager::GetInstance().Resize(Width, Height);
+		}
+
+		return 0;
+	}
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
@@ -57,7 +73,7 @@ void WindowClass::Update()
 
 	ViewInstance.Update();
 
-	RenderManager::GetInstance().Begin();
+	RenderManager::GetInstance().Begin(255, 255, 255);
 
 	ViewInstance.Render(RenderManager::GetInstance().GetBackDC());
 
@@ -71,4 +87,9 @@ void WindowClass::End()
 	ReleaseDC(WindowHandle, DeviceContext);
 
 	ViewInstance.End();
+}
+
+void WindowClass::Resize(int InWidth, int InHeight)
+{
+
 }
