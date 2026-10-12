@@ -19,7 +19,7 @@ public:
 
 	HDC GetBackDC() { return BackDC; }
 
-	void Init(HDC OriginalDC, int InWdith, int InHeight);
+	void Init(HWND WindowHandle, HDC OriginalDC);
 
 	void Begin(BYTE R, BYTE G, BYTE B);
 	void Render(HDC dc);

@@ -1,9 +1,12 @@
 #include "RenderManager.h"
 
-void RenderManager::Init(HDC OriginalDC, int InWidth, int InHeight)
+void RenderManager::Init(HWND WindowHandle, HDC OriginalDC)
 {
-	Width = InWidth;
-	Height = InHeight;
+	RECT Rect = {};
+	GetClientRect(WindowHandle, &Rect);
+
+	Width = (int)(Rect.right-Rect.left);
+	Height = (int)(Rect.bottom - Rect.top);
 
 	BackDC = CreateCompatibleDC(OriginalDC);
 
@@ -50,7 +53,12 @@ void RenderManager::End()
 
 void RenderManager::Resize(HDC OriginalDC, int InWidth, int InHeight)
 {
-	End();
+	SelectObject(BackDC, OldBitmap);
+	DeleteObject(BackBitmap);
 
-	Init(OriginalDC,InWidth, InHeight);
+	Width = InWidth;
+	Height = InHeight;
+
+	BackBitmap = CreateCompatibleBitmap(OriginalDC, InWidth, InHeight);
+	OldBitmap = SelectObject(BackDC, BackBitmap);
 }

@@ -1,13 +1,65 @@
 #pragma once
 
 #include <functional>
+#include <unordered_map>
+
+template<typename signature>
+class Callback;
+
+template<typename T, typename...Args>
+class Callback<T(Args...)>
+{
+public:
+	template<typename F>
+	void Bind(F&& function)
+	{
+		Func = std::forward<F>(function);
+	}
+
+	T Execute(Args... args) const
+	{
+		return Func(std::forward<Args>(args)...);
+	}
+
+private:
+	std::function<T(Args...)> Func;
+};
+
+class IEvent
+{
+public:
+	virtual ~IEvent() = default;
+};
+
+template<typename signature>
+class Event;
+
+template<typename T, typename... Args>
+class Event<T(Args...)> : public IEvent
+{
+public:
+	void Subscribe(Callback<T(Args...)> callback) { Callbacks.push_back(std::move(callback)); }
+
+	void BroadCast(Args... args)
+	{
+		for (auto& callback : Callbacks)
+		{
+			callback.Execute(args...);
+		}
+	}
+private:
+	std::vector<Callback<T(Args...)>> Callbacks;
+};
+
+enum class EventID
+{
+	WindowResize,
+	None,
+};
 
 class EventManager
 {
 public:
-	template<typename T>
-	using Callback = std::function<T>
-
 	static EventManager& GetInstance()
 	{
 		static EventManager Instance;
@@ -19,19 +71,43 @@ public:
 
 	EventManager& operator=(const EventManager&) = delete;
 	EventManager& operator=(EventManager&&) = delete;
-	
-	template<typename T, typename... ARGS>
-	void AddEvent(std::function<T> callback)
-	{ 
-		
+
+	template<typename signature>
+	Event<signature>& Create(EventID Id)
+	{
+		if (Events.contains(Id))
+		{
+			// Asssert 처리
+		}
+
+		Event<signature>* event = new Event<signature>();
+		Events.emplace(std::make_pair(Id, event));
+		return *event;
 	}
 
-	void BroadCast();
+	template<typename signature>
+	Event<signature>& Get(EventID Id)
+	{
+		std::unordered_map<EventID, IEvent*>::iterator iter = Events.find(Id);
 
+		if (iter == Events.end())
+		{
+			// Asssert 처리
+		}
+
+		Event<signature>* event = dynamic_cast<Event<signature>*>(iter->second);
+
+		if (!event)
+		{
+			// Asssert 처리
+		}
+
+		return *event;
+	}
+	 
 private:
 	EventManager() = default;
 	~EventManager() = default;
 
-	// Message 모아놓고 실행할 객체 만들고
-	std::vector<Callback> Callbacks;
- };
+	std::unordered_map<EventID, IEvent*> Events;
+};

@@ -3,6 +3,7 @@
 #include "Manager/ConsoleManager.h"
 #include "Manager/TimeManager.h"
 #include "Manager/RenderManager.h"
+#include "Manager/EventManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -18,8 +19,8 @@ LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 
 		if (Width > 0 && Height > 0)
 		{
-			Resize(Width, Height);
-			RenderManager::GetInstance().Resize(Width, Height);
+			EventManager::GetInstance().Get<void()>(EventID::WindowResize).BroadCast();
+			printf("WindowProc :: Window Reisze!\n");
 		}
 
 		return 0;
@@ -40,6 +41,18 @@ void WindowClass::Begin(HINSTANCE Instance)
 
 	TimeManager::GetInstance().Begin();
 
+	Event<void()>& ResizeEvent = EventManager::GetInstance().Create<void()>(EventID::WindowResize);
+
+	Callback<void()> ResizeCallback;
+
+	ResizeCallback.Bind([this]()
+		{
+			this->Resize();
+		}
+	);
+
+	ResizeEvent.Subscribe(ResizeCallback);
+
 	SetProcessDPIAware();
 
 	WNDCLASSEXW wc{};
@@ -56,13 +69,13 @@ void WindowClass::Begin(HINSTANCE Instance)
 
 	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);
 
-	ShowWindow(WindowHandle, SW_SHOW);
-
 	DeviceContext = GetDC(WindowHandle);
 
-	ViewInstance.Begin();
+	RenderManager::GetInstance().Init(WindowHandle, DeviceContext);
 
-	RenderManager::GetInstance().Init(DeviceContext, 1280, 720);
+	ShowWindow(WindowHandle, SW_SHOW);
+
+	ViewInstance.Begin();
 }
 
 void WindowClass::Update()
@@ -89,7 +102,14 @@ void WindowClass::End()
 	ViewInstance.End();
 }
 
-void WindowClass::Resize(int InWidth, int InHeight)
+void WindowClass::Resize()
 {
+	RECT Rect = {};
 
+	if (!GetClientRect(WindowHandle, &Rect))
+	{
+		return;
+	}
+
+	RenderManager::GetInstance().Resize(DeviceContext, (int)(Rect.right - Rect.left), (int)(Rect.bottom - Rect.top));
 }

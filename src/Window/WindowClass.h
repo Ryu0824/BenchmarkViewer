@@ -12,8 +12,8 @@ public:
 	void End();
 
 private:
-	void Resize(int InWidth, int InHeight);
-
+	void Resize();
+	
 	HWND WindowHandle;
 	HDC DeviceContext;
 	Viewer ViewInstance;
