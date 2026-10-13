@@ -16,7 +16,7 @@ void Button::Update()
 		{
 			State = ButtonState::OnMouseEnter;
 #ifdef _DEBUG
-			printf("OnMouseEnter!!\n");
+			printf("ButtonComponent : Enter Event Occured\n");
 #endif 
 		}
 		else if (State == ButtonState::OnMouseEnter)
@@ -26,9 +26,13 @@ void Button::Update()
 		else if (State == ButtonState::OnMouseOver)
 		{
 			// Click
-
+			if (InputManager::GetInstance().IsPressed(VK_LBUTTON))
+			{
+#ifdef _DEBUG
+				printf("ButtonComponent : Click Event Occured\n");
+#endif
+			}
 		}
-
 	}
 	else
 	{
@@ -36,7 +40,7 @@ void Button::Update()
 		{
 			State = ButtonState::OnMouseExit;
 #ifdef _DEBUG
-			printf("OnMouseExit!!\n");
+			printf("ButtonComponent : Exit Event Occured\n");
 #endif 
 		}
 	}

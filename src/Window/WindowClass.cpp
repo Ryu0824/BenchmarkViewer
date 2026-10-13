@@ -25,14 +25,51 @@ LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 
 		return 0;
 	}
+	case WM_LBUTTONDOWN:
+	{
+		InputManager::GetInstance().OnKeyDown(VK_LBUTTON);
+		return 0;
+	}
+	case WM_LBUTTONUP:
+	{
+		InputManager::GetInstance().OnKeyUp(VK_LBUTTON);
+		return 0;
+	}
+	case WM_RBUTTONDOWN:
+	{
+		InputManager::GetInstance().OnKeyDown(VK_RBUTTON);
+		return 0;
+	}
+	case WM_RBUTTONUP:
+	{
+		InputManager::GetInstance().OnKeyUp(VK_RBUTTON);
+		return 0;
+	}
 	case WM_KEYDOWN:
 	{
-
+		InputManager::GetInstance().OnKeyDown(static_cast<unsigned int>(w));
+		return 0;
 	}
 	case WM_KEYUP:
+	{
+		InputManager::GetInstance().OnKeyUp(static_cast<unsigned int>(w));
+		return 0;
+	}
 	case WM_SYSKEYDOWN:
+	{
+		InputManager::GetInstance().OnKeyDown(static_cast<unsigned int>(w));
+		break;
+	}
 	case WM_SYSKEYUP:
-
+	{
+		InputManager::GetInstance().OnKeyUp(static_cast<unsigned int>(w));
+		break;
+	}
+	case WM_KILLFOCUS:
+	{
+		InputManager::GetInstance().Reset();
+		break;
+	}
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
@@ -84,6 +121,11 @@ void WindowClass::Begin(HINSTANCE Instance)
 	ShowWindow(WindowHandle, SW_SHOW);
 
 	ViewInstance.Begin();
+}
+
+void WindowClass::BeginFrame()
+{
+	InputManager::GetInstance().Begin();
 }
 
 void WindowClass::Update()

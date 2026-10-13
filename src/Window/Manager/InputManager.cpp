@@ -7,19 +7,51 @@
 
 void InputManager::Begin()
 {
-
+	for (KeyState& key : Keys)
+	{
+		key.Pressed = false;
+		key.Released = false;
+	}
 }
 
 void InputManager::Update(HWND hWnd)
 {
 	CalculateMousePosition(hWnd);
-
-	GetAsyncKeyState
 }
+
 
 void InputManager::End()
 {
 
+}
+
+void InputManager::OnKeyDown(unsigned int key)
+{
+	if (key >= Keys.size())return;
+
+	KeyState& State = Keys[key];
+
+	if (!State.Down)
+		State.Pressed = true;
+
+	State.Down = true;
+}
+
+void InputManager::OnKeyUp(unsigned int key)
+{
+	if (key >= Keys.size())return;
+
+	KeyState& State = Keys[key];
+
+	if (State.Down)
+		State.Released = true;
+
+	State.Down = false;
+}
+
+void InputManager::Reset()
+{
+	Keys = {};
 }
 
 void InputManager::CalculateMousePosition(HWND hWnd)

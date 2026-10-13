@@ -3,11 +3,11 @@
 #include <Windows.h>
 #include <array>
 
-struct ButtonState
+struct KeyState
 {
 	bool Down = false;
-	bool IsPressed = false;
-	bool IsReleased = false;
+	bool Pressed = false;
+	bool Released = false;
 };
 
 class InputManager
@@ -31,9 +31,14 @@ public:
 	InputManager& operator=(const InputManager& Other) = delete;
 	InputManager& operator=(InputManager&& Other) = delete;
 
+	bool IsPressed(unsigned int key) const { return (key < Keys.size()) && (Keys[key].Pressed); }
+	bool IsReleased(unsigned int key) const { return (key < Keys.size()) && (Keys[key].Released); }
+	bool IsDown(unsigned int key) const { return (key < Keys.size()) && (Keys[key].Down); }
+
 private:
-	void IsKeyDown(uint32_t key);
-	void IsKeyUp(uint32_t key);
+	void OnKeyDown(unsigned int key);
+	void OnKeyUp(unsigned int key);
+	void Reset();
 
 private:
 	InputManager() = default;
@@ -42,7 +47,7 @@ private:
 	void CalculateMousePosition(HWND hWnd);
 
 	POINT ClientMousePosition;
-	std::array<ButtonState, 256> ButtonStates;
+	std::array<KeyState, 256> Keys{};
 
 	friend LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l);
 };

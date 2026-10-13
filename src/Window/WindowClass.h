@@ -8,6 +8,8 @@ class WindowClass
 {
 public:
 	void Begin(HINSTANCE Instance);
+
+	void BeginFrame();
 	void Update();
 	void End();
 
