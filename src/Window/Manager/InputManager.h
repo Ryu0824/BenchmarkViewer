@@ -1,12 +1,13 @@
 #pragma once
 
 #include <Windows.h>
+#include <array>
 
-enum class EKEY
+struct ButtonState
 {
-	/*VK_LBUTTON,
-	VK_RBUTTON,
-	END,*/
+	bool Down = false;
+	bool IsPressed = false;
+	bool IsReleased = false;
 };
 
 class InputManager
@@ -29,12 +30,19 @@ public:
 
 	InputManager& operator=(const InputManager& Other) = delete;
 	InputManager& operator=(InputManager&& Other) = delete;
+
+private:
+	void IsKeyDown(uint32_t key);
+	void IsKeyUp(uint32_t key);
+
 private:
 	InputManager() = default;
 	~InputManager() = default;
 
 	void CalculateMousePosition(HWND hWnd);
 
-	POINT ClientMousePosition;/*
-	int ButtonArray[(UINT32)EKEY::END];*/
+	POINT ClientMousePosition;
+	std::array<ButtonState, 256> ButtonStates;
+
+	friend LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l);
 };

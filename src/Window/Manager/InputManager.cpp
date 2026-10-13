@@ -13,6 +13,8 @@ void InputManager::Begin()
 void InputManager::Update(HWND hWnd)
 {
 	CalculateMousePosition(hWnd);
+
+	GetAsyncKeyState
 }
 
 void InputManager::End()

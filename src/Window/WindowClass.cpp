@@ -25,6 +25,14 @@ LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 
 		return 0;
 	}
+	case WM_KEYDOWN:
+	{
+
+	}
+	case WM_KEYUP:
+	case WM_SYSKEYDOWN:
+	case WM_SYSKEYUP:
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
