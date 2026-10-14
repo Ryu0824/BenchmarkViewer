@@ -16,6 +16,16 @@ void Viewer::Begin()
 	TransformComp->SetScale(UMath::Vector2(200.f, 200.f));
 
 	Objects.push_back(testObject);
+
+
+	// 4 Object
+	// BenchMark Resource Object
+
+	// BenchMark Resource -> Compare Standard
+
+	// BenchMark Enviroment
+
+	// BenchMark Chart
 }
 
 void Viewer::Update()

@@ -19,6 +19,7 @@ if(WIN32)
 		src/Window/Component/Component.cpp
 		src/Window/Component/Transform.cpp
 		src/Window/Component/Button.cpp
+		src/Window/Component/SpriteRenderer.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
 		src/Window/Manager/RenderManager.cpp
