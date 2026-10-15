@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "../Manager/EventManager.h"
 
 enum class ButtonState
 {
@@ -33,4 +34,6 @@ public:
 private:
 	bool Interactive();
 	ButtonState State;
+
+	Event<void()> OnClickEvent;
 };
