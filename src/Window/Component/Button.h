@@ -31,6 +31,14 @@ public:
 		return ComponentType::Button;
 	}
 
+	void SetClickEvent(std::function<void()> func) 
+	{
+		Callback<void()> CallBackInst;
+		CallBackInst.Bind(func);
+	
+		OnClickEvent.Subscribe(CallBackInst);
+	}
+
 private:
 	bool Interactive();
 	ButtonState State;

@@ -10,7 +10,12 @@ void Viewer::Begin()
 	}*/
 	Object* testObject = new Object;
 	Transform* TransformComp = testObject->AddComponent<Transform>();
-	testObject->AddComponent<Button>();
+	Button* ButtonComp = testObject->AddComponent<Button>();
+
+	ButtonComp->SetClickEvent([]()
+		{
+			printf("testfunc : Click Event Success\n");
+		});
 
 	TransformComp->SetPosition(UMath::Vector2(640.f, 360.f));
 	TransformComp->SetScale(UMath::Vector2(200.f, 200.f));
