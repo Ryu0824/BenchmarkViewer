@@ -6,7 +6,7 @@
 class BenchMarkData
 {
 public:
-	void Parsing();
+	bool Parsing(const std::wstring& FilePath);
 
 private:
 	std::vector<std::vector<std::string>> BenchData;

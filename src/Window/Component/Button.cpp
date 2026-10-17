@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "../Object/Object.h"
 
-void Button::Begin()
+void Button::Begin(HWND WindowHandle)
 {
 
 }

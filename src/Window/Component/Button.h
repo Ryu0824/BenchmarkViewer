@@ -19,7 +19,7 @@ public:
 	Button() = default;
 	~Button() = default;
 
-	virtual void Begin() override;
+	virtual void Begin(HWND WindowHandle) override;
 	virtual void Update() override;
 	virtual void Render(HDC dc) override;
 	virtual void End() override;

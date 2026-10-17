@@ -532,7 +532,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, PWSTR, int show)
 	{
 		Class.BeginFrame();
 
-		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+		while (PeekMessage(&msg, Class.GetWindowHandle(), 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
 			{

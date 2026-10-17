@@ -2,12 +2,12 @@
 
 #include <vector>
 #include <Windows.h>
+#include <string>
 #include "../Component/Component.h"
 
 class Object
 {
 public:
-	void Begin();
 	void Update();
 	void Render(HDC dc);
 	void End();
@@ -55,6 +55,10 @@ public:
 		return nullptr;
 	}
 
+	void SetName(const std::wstring InName) { Name = InName; }
+	std::wstring& GetName() { return Name; }
+
 private:
 	Component* Comps[(uint32_t)ComponentType::End] = {};
+	std::wstring Name = {};
 };

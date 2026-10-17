@@ -24,7 +24,7 @@ namespace UMath
 class Transform : public Component
 {
 public:
-	virtual void Begin() override;
+	virtual void Begin(HWND WindowHandle) override;
 	virtual void Update() override;
 	virtual void End() override;
 

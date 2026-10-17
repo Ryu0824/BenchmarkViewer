@@ -112,7 +112,7 @@ void WindowClass::Begin(HINSTANCE Instance)
 		return;
 	}
 
-	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);
+	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);
 
 	DeviceContext = GetDC(WindowHandle);
 
@@ -120,7 +120,7 @@ void WindowClass::Begin(HINSTANCE Instance)
 
 	ShowWindow(WindowHandle, SW_SHOW);
 
-	ViewInstance.Begin();
+	ViewInstance.Begin(WindowHandle);
 }
 
 void WindowClass::BeginFrame()

@@ -1,6 +1,6 @@
 #include "Transform.h"
 
-void Transform::Begin()
+void Transform::Begin(HWND WindowHandle)
 {
 }
 

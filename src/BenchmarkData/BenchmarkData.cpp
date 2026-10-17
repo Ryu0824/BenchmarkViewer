@@ -1,8 +1,7 @@
 #include "BenchmarkData.h"
 #include <filesystem>
 
-
-void BenchMarkData::Parsing()
+bool BenchMarkData::Parsing(const std::wstring& FilePath)
 {
-
+	return true;
 }

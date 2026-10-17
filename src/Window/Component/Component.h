@@ -9,6 +9,7 @@ enum class ComponentType
 	None,
 	Button,
 	Transform,
+	ListBox,
 	End,
 };
 
@@ -21,7 +22,7 @@ concept HasStaticCompType = requires
 class Component
 {
 public:
-	virtual void Begin() = 0;
+	virtual void Begin(HWND WindowHandle) = 0;
 	virtual void Update() = 0;
 	virtual void Render(HDC dc) {};
 	virtual void End() = 0;
