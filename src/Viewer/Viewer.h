@@ -93,6 +93,8 @@ private:
 	Event<void(std::wstring)> ResourceAddEvent;
 	Event<void()> ResourceRemoveEvent;
 
+	LRESULT CurrentListIndex = 0;
+
 	friend class BenchMarkViewerSetting;
 };
 

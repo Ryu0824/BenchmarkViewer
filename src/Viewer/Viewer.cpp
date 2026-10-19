@@ -224,6 +224,9 @@ void Viewer::SelectResource()
 	{
 		LRESULT Index = ListBoxComp->GetSelectedIndex();
 		if (Index >= Datas.size())return;
+
+		Datas[CurrentListIndex].IsSelected = false;
+		CurrentListIndex = Index;
 		Datas[Index].Selected();
 	}
 }
