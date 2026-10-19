@@ -21,6 +21,8 @@ public:
 		return ComponentType::ListBox;
 	}
 
+	LRESULT GetSelectedIndex() const { return SelectedIndex; }
+
 private:
 	HWND ListBoxHandle;
 	LRESULT SelectedIndex;

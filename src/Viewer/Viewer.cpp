@@ -1,8 +1,5 @@
 #include "Viewer.h"
-#include "../Window/Component/Button.h"
-#include "../Window/Component/Transform.h"
-#include "../Window/Component/ListBox.h"
-#include "../BenchmarkData/BenchmarkData.h"
+
 
 void Viewer::Begin(HWND WindowHandle)
 {
@@ -37,7 +34,22 @@ void Viewer::Begin(HWND WindowHandle)
 
 	Objects.push_back(ResourecRemoveBtn);
 
-	// 1-3. BenchMark Resource 
+	// 1-3 BenchMark Resource Selected Button
+	Object* ResourceSelectBtn = new Object;
+	TransformComp = ResourceSelectBtn->AddComponent<Transform>();
+	ButtonComp = ResourceSelectBtn->AddComponent<Button>();
+
+	ButtonComp->SetClickEvent([&]()
+		{
+			this->SelectResource();
+		});
+
+	TransformComp->SetPosition(UMath::Vector2(295.f, 335.f));
+	TransformComp->SetScale(UMath::Vector2(110.f, 50.f));
+
+	Objects.push_back(ResourceSelectBtn);
+
+	// 1-4. BenchMark Resource 
 	Object* ResourceListBox = new Object;
 	ResourceListBox->SetName(L"ResourceListBox");
 	TransformComp = ResourceListBox->AddComponent<Transform>();
@@ -46,12 +58,32 @@ void Viewer::Begin(HWND WindowHandle)
 
 	Objects.push_back(ResourceListBox);
 
-	//TransformComp->SetPosition(UMath::Vector2(640.f, 360.f));
-	//TransformComp->SetScale(UMath::Vector2(200.f, 200.f));
+	// 1-5. BenchMark Current Select Resource
+	Object* ResourceCurrentSelectBox = new Object;
+	ResourceCurrentSelectBox->SetName(L"ResourceCurrentSelectBox");
+	TransformComp = ResourceCurrentSelectBox->AddComponent<Transform>();
+	TextBox* ResourceTextBoxComp = ResourceCurrentSelectBox->AddComponent<TextBox>();
+	ResourceTextBoxComp->Begin(WindowHandle);
 
-	// 2. BenchMark Data Measurement
+	Objects.push_back(ResourceCurrentSelectBox);
 
-	// BenchMark Enviroment
+	// 2. BenchMark Enviroment
+	Object* EnviromentListView = new Object;
+	EnviromentListView->SetName(L"EnviromentListView");
+	TransformComp = EnviromentListView->AddComponent<Transform>();
+	ListView* EnviromentListViewComp = EnviromentListView->AddComponent<ListView>();
+	EnviromentListViewComp->Begin(WindowHandle);
+
+	Objects.push_back(EnviromentListView);
+
+	// 3. BenchMark Data Measurement
+	//Object* MeasureMentListObject = new Object;
+	//MeasureMentListObject->SetName(L"MeasureMentListObject");
+	//TransformComp = MeasureMentListObject->AddComponent<Transform>();
+	//ListBox* MeasureMentListBox = MeasureMentListObject->AddComponent<ListBox>();
+	//MeasureMentListBox->Begin(WindowHandle);
+
+	//Objects.push_back(MeasureMentListObject);
 
 	// BenchMark Chart
 
@@ -139,26 +171,17 @@ void Viewer::AddResource(std::wstring FilePath)
 	// error 시 로그 추가
 	if (!Result)
 	{
-#ifdef _DEBUG
-		printf("Parsing 실패!!");
-#endif 
 		return;
 	}
+	BenchMarkViewerSetting ViewerSetting;
+	ViewerSetting.Data = Data;
+
+	ViewerSetting.Init(this);
+
+	Datas.push_back(ViewerSetting);
+
 	// 2. Parsing 성공 시 ListBox 추가
-	std::vector<Object*>::iterator iter = Objects.begin();
-	Object* ListBoxObject = nullptr;
-	for (;iter != Objects.end();iter++)
-	{
-		Object* FindObject = *iter;
-		if (FindObject)
-		{
-			if (FindObject->GetName() == L"ResourceListBox")
-			{
-				ListBoxObject = FindObject;
-				break;
-			}
-		}
-	}
+	Object* ListBoxObject = FindObject(L"ResourceListBox");
 
 	if (ListBoxObject)
 	{
@@ -172,27 +195,35 @@ void Viewer::AddResource(std::wstring FilePath)
 
 void Viewer::RemoveResource()
 {
-	std::vector<Object*>::iterator iter = Objects.begin();
-	Object* ListBoxObject = nullptr;
-	for (;iter != Objects.end();iter++)
-	{
-		Object* FindObject = *iter;
-		if (FindObject)
-		{
-			if (FindObject->GetName() == L"ResourceListBox")
-			{
-				ListBoxObject = FindObject;
-				break;
-			}
-		}
-	}
+	Object* ListBoxObject = FindObject(L"ResourceListBox");
 
 	if (ListBoxObject)
 	{
 		ListBox* ListBoxComp = ListBoxObject->GetComponent<ListBox>();
-		if (ListBoxComp)
+		LRESULT Index = ListBoxComp->GetSelectedIndex();
+
+		if (Index >= Datas.size()) return;
+
+		BenchMarkViewerSetting BenchMarkData = Datas[Index];
+		if (BenchMarkData.IsSelected)
 		{
-			ListBoxComp->RemoveRowData();
+			BenchMarkData.Reset();
 		}
+
+		Datas.erase(Datas.begin() + Index);
+		ListBoxComp->RemoveRowData();
+	}
+}
+
+void Viewer::SelectResource()
+{
+	Object* ListBoxObject = FindObject(L"ResourceListBox");
+	ListBox* ListBoxComp = ListBoxObject->GetComponent<ListBox>();
+
+	if (ListBoxComp)
+	{
+		LRESULT Index = ListBoxComp->GetSelectedIndex();
+		if (Index >= Datas.size())return;
+		Datas[Index].Selected();
 	}
 }

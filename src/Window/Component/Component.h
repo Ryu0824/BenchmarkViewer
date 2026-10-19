@@ -10,6 +10,8 @@ enum class ComponentType
 	Button,
 	Transform,
 	ListBox,
+	TextBox,
+	ListView,
 	End,
 };
 

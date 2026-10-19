@@ -1,11 +1,14 @@
 #include "BenchmarkData.h"
+#include "BenchmarkData.h"
+#include "BenchmarkData.h"
+#include "BenchmarkData.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-bool BenchMarkData::Parsing(const std::wstring& FilePath)
+bool BenchMarkData::Parsing(const std::wstring& InFilePath)
 {
-	std::wifstream File(FilePath.c_str());
+	std::wifstream File(InFilePath.c_str());
 
 	if (!File.is_open())
 	{
@@ -14,6 +17,8 @@ bool BenchMarkData::Parsing(const std::wstring& FilePath)
 #endif
 		return false;
 	}
+
+	FilePath = InFilePath;
 
 	std::wstring Line;
 
@@ -33,10 +38,34 @@ bool BenchMarkData::Parsing(const std::wstring& FilePath)
 			Row.push_back(Cell);
 		}
 
-		BenchData.push_back(Row);
+		RawData.push_back(Row);
 	}
 
-	int a = 0;
+	EnviromentParsing();
+	MeasureMentParsing();
+	ChartConentParsing();
 
 	return true;
+}
+
+void BenchMarkData::EnviromentParsing()
+{
+	if (RawData.empty()) return;
+
+	// Platform
+	EnviromentData.push_back(RawData[1][1]);
+
+	// Compiler
+	EnviromentData.push_back(RawData[1][2]);
+
+	// Machine
+	EnviromentData.push_back(RawData[1][3]);
+}
+
+void BenchMarkData::MeasureMentParsing()
+{
+}
+
+void BenchMarkData::ChartConentParsing()
+{
 }

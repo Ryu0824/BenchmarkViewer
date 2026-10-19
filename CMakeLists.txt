@@ -20,13 +20,15 @@ if(WIN32)
 		src/Window/Component/Transform.cpp
 		src/Window/Component/Button.cpp
 		src/Window/Component/ListBox.cpp
+		src/Window/Component/TextBox.cpp
+		src/Window/Component/ListView.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
 		src/Window/Manager/RenderManager.cpp
 		src/Window/Manager/TimeManager.cpp
 		src/Window/Manager/RenderManager.cpp
-		src/Window/Manager/EventManager.cpp
-	)
+		src/Window/Manager/EventManager.cpp)
+
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
 	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdi32 comdlg32 comctl32 shell32)
 	configure_target(BenchmarkViewer)
