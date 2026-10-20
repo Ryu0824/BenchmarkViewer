@@ -12,6 +12,7 @@ enum class ComponentType
 	ListBox,
 	TextBox,
 	ListView,
+	BarChart,
 	End,
 };
 

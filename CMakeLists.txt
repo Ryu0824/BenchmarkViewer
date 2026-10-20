@@ -22,6 +22,7 @@ if(WIN32)
 		src/Window/Component/ListBox.cpp
 		src/Window/Component/TextBox.cpp
 		src/Window/Component/ListView.cpp
+		src/Window/Component/BarChart.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
 		src/Window/Manager/RenderManager.cpp

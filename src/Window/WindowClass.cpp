@@ -78,6 +78,92 @@ LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 	return DefWindowProcW(h, m, w, l);
 }
 
+LRESULT CALLBACK ChartProc(
+	HWND Window,
+	UINT Message,
+	WPARAM wParam,
+	LPARAM lParam
+)
+{
+	switch (Message)
+	{
+	case WM_PAINT:
+	{
+		PAINTSTRUCT Paint = {};
+		HDC DC = BeginPaint(Window, &Paint);
+
+		RECT Client = {};
+		GetClientRect(Window, &Client);
+
+		FillRect(
+			DC,
+			&Client,
+			GetSysColorBrush(COLOR_WINDOW)
+		);
+
+		const int Values[] = { 40,80,60 };
+		constexpr int Count = 3;
+		constexpr int MaxValue = 100;
+
+		const int Left = 40;
+		const int Top = 20;
+		const int Bottom = Client.bottom - 30;
+		const int PlotWidth = Client.right - Left - 20;
+		const int PlotHeight = Bottom - Top;
+
+		if (PlotWidth >= Count && PlotHeight > 0)
+		{
+			HGDIOBJ OldPen = SelectObject(DC, GetStockObject(BLACK_PEN));
+
+			MoveToEx(DC, Left, Top, nullptr);
+			LineTo(DC, Left, Bottom);
+			LineTo(DC, Left + PlotWidth, Bottom);
+
+			SelectObject(DC, OldPen);
+
+			HBRUSH Brush = CreateSolidBrush(RGB(70, 130, 220));
+
+			if (Brush)
+			{
+				const int SlotWidth = PlotWidth / Count;
+				const int BarWidth =
+					SlotWidth > 1 ? SlotWidth / 2 : 1;
+
+				for (int Index = 0;Index < Count;++Index)
+				{
+					const int Height =
+						PlotHeight * Values[Index] / MaxValue;
+
+					const int X =
+						Left + Index * SlotWidth
+						+ (SlotWidth - BarWidth) / 2;
+
+					RECT Bar = {
+						X,
+						Bottom - Height,
+						X + BarWidth,
+						Bottom
+					};
+
+					FillRect(DC, &Bar, Brush);
+				}
+
+				DeleteObject(Brush);
+			}
+		}
+		EndPaint(Window, &Paint);
+		return 0;
+
+	}
+	case WM_SIZE:
+		InvalidateRect(Window, nullptr, FALSE);
+		return 0;
+
+	}
+
+	return DefWindowProcW(Window, Message, wParam, lParam);
+}
+
 void WindowClass::Begin(HINSTANCE Instance)
 {
 #ifdef _DEBUG
@@ -112,13 +198,21 @@ void WindowClass::Begin(HINSTANCE Instance)
 		return;
 	}
 
-	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW|WS_CLIPCHILDREN, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);
+	WindowHandle = CreateWindowExW(0, L"BenchMarkWindow", L"BenchMarkViewer", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN, CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, nullptr, nullptr, Instance, nullptr);
 
 	DeviceContext = GetDC(WindowHandle);
 
 	RenderManager::GetInstance().Init(WindowHandle, DeviceContext);
 
 	ShowWindow(WindowHandle, SW_SHOW);
+
+	WNDCLASSW ChartClass = {};
+	ChartClass.lpfnWndProc = ChartProc;
+	ChartClass.hInstance = Instance;
+	ChartClass.lpszClassName = L"BarChartControl";
+	ChartClass.hCursor = LoadCursorW(nullptr, IDC_ARROW);
+
+	RegisterClassW(&ChartClass);
 
 	ViewInstance.Begin(WindowHandle);
 }

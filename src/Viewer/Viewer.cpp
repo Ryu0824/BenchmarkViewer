@@ -1,6 +1,5 @@
 #include "Viewer.h"
 
-
 void Viewer::Begin(HWND WindowHandle)
 {
 	// 4 Object
@@ -98,6 +97,16 @@ void Viewer::Begin(HWND WindowHandle)
 	Objects.push_back(MeasureMentListObject);
 
 	// BenchMark Chart
+	Object* TestChart = new Object;
+	TestChart->SetName(L"BarChartTest");
+	TransformComp = TestChart->AddComponent<Transform>();
+	BarChart* BarChartComp = TestChart->AddComponent<BarChart>();
+	BarChartComp->Begin(WindowHandle);
+
+	TransformComp->SetPosition(UMath::Vector2(500.f, 100.f));
+	TransformComp->SetScale(UMath::Vector2(500.f, 300.f));
+
+	Objects.push_back(TestChart);
 
 	// CreateEvent
 	// 1. ResourceAddEvent
