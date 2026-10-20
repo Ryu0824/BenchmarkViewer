@@ -64,6 +64,12 @@ void BenchMarkData::EnviromentParsing()
 
 void BenchMarkData::MeasureMentParsing()
 {
+	std::vector<std::wstring>::iterator iter = RawData[0].begin() + 4;
+
+	for (;iter != RawData[0].end();iter++)
+	{
+		MeasureMentData.push_back(*iter);
+	}
 }
 
 void BenchMarkData::ChartConentParsing()

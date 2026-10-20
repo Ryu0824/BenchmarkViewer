@@ -56,22 +56,31 @@ private:
 		{
 			if (!Instance) return;
 			SelectTextBoxObject = Instance->FindObject(L"ResourceCurrentSelectBox")->GetComponent<TextBox>();
-			//MeasureMentListObject = Instance->FindObject(L"MeasureMentListObject")->GetComponent<ListBox>();
+			MeasureMentListObject = Instance->FindObject(L"MeasureMentListObject")->GetComponent<ListBox>();
 			EnviromentObject = Instance->FindObject(L"EnviromentListView")->GetComponent<ListView>();
 		}
 
 		void Selected()
 		{
 			IsSelected = true;
+
+			Reset();
+
 			SelectTextBoxObject->UpdateData(Data.GetFilePath());
 			EnviromentObject->AddTableRow(Data.GetEnviromentData()[0], Data.GetEnviromentData()[1], Data.GetEnviromentData()[2]);
+
+			for (size_t i = 0;i < Data.GetMeasurementData().size();++i)
+			{
+				MeasureMentListObject->AddRowData(Data.GetMeasurementData()[i]);
+			}
 		}
 
 		void Reset()
 		{
 			SelectTextBoxObject->UpdateData(L"");
-			//MeasureMentListObject->Reset();
+			MeasureMentListObject->Reset();
 			EnviromentObject->Reset();
+			MeasureMentListObject->Reset();
 		}
 
 	private:
