@@ -1,4 +1,6 @@
 #include "TextBox.h"
+#include "../Object/Object.h"
+#include "../Component/Transform.h"
 
 void TextBox::Begin(HWND WindowHandle)
 {
@@ -20,11 +22,21 @@ void TextBox::Begin(HWND WindowHandle)
 
 void TextBox::Update()
 {
+	Transform* TransformComp = GetOwner()->GetComponent<Transform>();
+	if (TransformComp)
+	{
+		UMath::Vector2 Position = TransformComp->GetPosition();
+		UMath::Vector2 Scale = TransformComp->GetScale();
+
+		MoveWindow(TextBoxHandle,
+			(int)Position.x, (int)Position.y,
+			(int)Scale.x, (int)Scale.y,
+			TRUE);
+	}
 }
 
 void TextBox::Render(HDC dc)
 {
-
 }
 
 void TextBox::End()

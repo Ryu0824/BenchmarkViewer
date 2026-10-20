@@ -1,5 +1,7 @@
 #include "ListView.h"
 #include <CommCtrl.h>
+#include "../Object/Object.h"
+#include "../Component/Transform.h"
 
 void ListView::Begin(HWND WindowHandle)
 {
@@ -33,6 +35,17 @@ void ListView::Begin(HWND WindowHandle)
 
 void ListView::Update()
 {
+	Transform* TransformComp = GetOwner()->GetComponent<Transform>();
+	if (TransformComp)
+	{
+		UMath::Vector2 Position = TransformComp->GetPosition();
+		UMath::Vector2 Scale = TransformComp->GetScale();
+
+		MoveWindow(ListViewHandle,
+			(int)Position.x, (int)Position.y,
+			(int)Scale.x, (int)Scale.y,
+			TRUE);
+	}
 }
 
 void ListView::Render(HDC dc)

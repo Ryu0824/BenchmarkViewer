@@ -56,6 +56,9 @@ void Viewer::Begin(HWND WindowHandle)
 	ListBox* ResourceListBoxComp = ResourceListBox->AddComponent<ListBox>();
 	ResourceListBoxComp->Begin(WindowHandle);
 
+	TransformComp->SetPosition(UMath::Vector2(20.f, 100.f));
+	TransformComp->SetScale(UMath::Vector2(300.f, 200.f));
+
 	Objects.push_back(ResourceListBox);
 
 	// 1-5. BenchMark Current Select Resource
@@ -64,6 +67,9 @@ void Viewer::Begin(HWND WindowHandle)
 	TransformComp = ResourceCurrentSelectBox->AddComponent<Transform>();
 	TextBox* ResourceTextBoxComp = ResourceCurrentSelectBox->AddComponent<TextBox>();
 	ResourceTextBoxComp->Begin(WindowHandle);
+
+	TransformComp->SetPosition(UMath::Vector2(20.f, 60.f));
+	TransformComp->SetScale(UMath::Vector2(300.f, 20.f));
 
 	Objects.push_back(ResourceCurrentSelectBox);
 
@@ -74,16 +80,22 @@ void Viewer::Begin(HWND WindowHandle)
 	ListView* EnviromentListViewComp = EnviromentListView->AddComponent<ListView>();
 	EnviromentListViewComp->Begin(WindowHandle);
 
+	TransformComp->SetPosition(UMath::Vector2(350.f, 20.f));
+	TransformComp->SetScale(UMath::Vector2(700.f, 100.f));
+
 	Objects.push_back(EnviromentListView);
 
 	// 3. BenchMark Data Measurement
-	//Object* MeasureMentListObject = new Object;
-	//MeasureMentListObject->SetName(L"MeasureMentListObject");
-	//TransformComp = MeasureMentListObject->AddComponent<Transform>();
-	//ListBox* MeasureMentListBox = MeasureMentListObject->AddComponent<ListBox>();
-	//MeasureMentListBox->Begin(WindowHandle);
+	Object* MeasureMentListObject = new Object;
+	MeasureMentListObject->SetName(L"MeasureMentListObject");
+	TransformComp = MeasureMentListObject->AddComponent<Transform>();
+	ListBox* MeasureMentListBox = MeasureMentListObject->AddComponent<ListBox>();
+	MeasureMentListBox->Begin(WindowHandle);
 
-	//Objects.push_back(MeasureMentListObject);
+	TransformComp->SetPosition(UMath::Vector2(20.f, 370.f));
+	TransformComp->SetScale(UMath::Vector2(300.f, 300.f));
+
+	Objects.push_back(MeasureMentListObject);
 
 	// BenchMark Chart
 
