@@ -97,17 +97,31 @@ void Viewer::Begin(HWND WindowHandle)
 	Objects.push_back(MeasureMentListObject);
 
 	// BenchMark Chart
-	Object* TestChart = new Object;
-	TestChart->SetName(L"BarChartTest");
-	TransformComp = TestChart->AddComponent<Transform>();
-	BarChart* BarChartComp = TestChart->AddComponent<BarChart>();
-	BarChartComp->Begin(WindowHandle);
+	Object* TestChartGroup = new Object;
+	TestChartGroup->SetName(L"TestChartGroup");
+	TransformComp = TestChartGroup->AddComponent<Transform>();
+	ChartGroup* CharGroupComp = TestChartGroup->AddComponent<ChartGroup>();
 
 	TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
-	TransformComp->SetScale(UMath::Vector2(800, 300.f));
+	TransformComp->SetScale(UMath::Vector2(800, 450.f));
 
-	Objects.push_back(TestChart);
+	Objects.push_back(TestChartGroup);
 
+	for (int i = 0;i < 3;i++)
+	{
+		Object* TestChart = new Object;
+		TestChart->SetName(L"BarChartTest");
+		TransformComp = TestChart->AddComponent<Transform>();
+		BarChart* BarChartComp = TestChart->AddComponent<BarChart>();
+
+		TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
+		TransformComp->SetScale(UMath::Vector2(800, 150.f));
+
+		Objects.push_back(TestChart);
+
+		CharGroupComp->PushChart(TestChart);
+	}
+	
 	// CreateEvent
 	// 1. ResourceAddEvent
 	Callback<void(std::wstring)> AddCallback;

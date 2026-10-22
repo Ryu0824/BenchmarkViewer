@@ -18,7 +18,15 @@ public:
 	}
 
 private:
-	//void DrawGraph();
-
 	HWND BarChartHandle;
+	Object* Group;
+	int Index;
+
+	void SetGroup(Object* InGroup, const int InIndex)
+	{
+		Group = InGroup;
+		Index = InIndex;
+	}
+
+	friend class ChartGroup;
 };

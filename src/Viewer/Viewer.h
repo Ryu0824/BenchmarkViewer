@@ -12,6 +12,7 @@
 #include "../Window/Component/TextBox.h"
 #include "../Window/Component/ListView.h"
 #include "../Window/Component/BarChart.h"
+#include "../Window/Component/ChartGroup.h"
 #include "../BenchmarkData/BenchmarkData.h"
 
 class Viewer
