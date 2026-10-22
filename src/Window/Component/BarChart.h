@@ -18,5 +18,7 @@ public:
 	}
 
 private:
+	//void DrawGraph();
+
 	HWND BarChartHandle;
 };

@@ -103,8 +103,8 @@ void Viewer::Begin(HWND WindowHandle)
 	BarChart* BarChartComp = TestChart->AddComponent<BarChart>();
 	BarChartComp->Begin(WindowHandle);
 
-	TransformComp->SetPosition(UMath::Vector2(500.f, 100.f));
-	TransformComp->SetScale(UMath::Vector2(500.f, 300.f));
+	TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
+	TransformComp->SetScale(UMath::Vector2(800, 300.f));
 
 	Objects.push_back(TestChart);
 
