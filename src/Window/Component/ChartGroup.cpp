@@ -35,6 +35,17 @@ void ChartGroup::Render(HDC dc)
 	int Bottom = Position.y + Scale.y / 2.f;
 
 	Rectangle(dc, Left, Top, Right, Bottom);
+
+	if (BarCharts.empty()) return;
+
+	for (size_t i = 0;i < BarCharts.size();++i)
+	{
+		BarChart* ChartComp = BarCharts[i]->GetComponent<BarChart>();
+		if (ChartComp)
+		{
+			ChartComp->Render(dc);
+		}
+	}
 }
 
 void ChartGroup::End()

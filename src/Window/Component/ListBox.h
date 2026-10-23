@@ -21,7 +21,9 @@ public:
 		return ComponentType::ListBox;
 	}
 
-	LRESULT GetSelectedIndex() const { return SelectedIndex; }
+	LRESULT GetSelectedIndex() { 
+		SelectedIndex = SendMessageW(ListBoxHandle, LB_GETCURSEL, 0, 0);
+		return SelectedIndex; }
 
 private:
 	HWND ListBoxHandle;

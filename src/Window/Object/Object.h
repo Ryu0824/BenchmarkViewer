@@ -8,6 +8,18 @@
 class Object
 {
 public:
+	~Object()
+	{
+		for (uint32_t i = 0;i < (uint32_t)ComponentType::End;++i)
+		{
+			if (Comps[i])
+			{
+				delete Comps[i];
+				Comps[i] = nullptr;
+			}
+		}
+	}
+
 	void Update();
 	void Render(HDC dc);
 	void End();

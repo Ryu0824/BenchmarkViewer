@@ -97,31 +97,31 @@ void Viewer::Begin(HWND WindowHandle)
 	Objects.push_back(MeasureMentListObject);
 
 	// BenchMark Chart
-	Object* TestChartGroup = new Object;
-	TestChartGroup->SetName(L"TestChartGroup");
-	TransformComp = TestChartGroup->AddComponent<Transform>();
-	ChartGroup* CharGroupComp = TestChartGroup->AddComponent<ChartGroup>();
+	Object* ChartGroupObject = new Object;
+	ChartGroupObject->SetName(L"ChartGroupObject");
+	TransformComp = ChartGroupObject->AddComponent<Transform>();
+	ChartGroup* CharGroupComp = ChartGroupObject->AddComponent<ChartGroup>();
 
 	TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
 	TransformComp->SetScale(UMath::Vector2(800, 450.f));
 
-	Objects.push_back(TestChartGroup);
+	Objects.push_back(ChartGroupObject);
 
-	for (int i = 0;i < 3;i++)
-	{
-		Object* TestChart = new Object;
-		TestChart->SetName(L"BarChartTest");
-		TransformComp = TestChart->AddComponent<Transform>();
-		BarChart* BarChartComp = TestChart->AddComponent<BarChart>();
+	// MeasureMent Button
+	Object* MeasureMentAddBtn = new Object;
+	TransformComp = MeasureMentAddBtn->AddComponent<Transform>();
+	ButtonComp = MeasureMentAddBtn->AddComponent<Button>();
 
-		TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
-		TransformComp->SetScale(UMath::Vector2(800, 150.f));
+	ButtonComp->SetClickEvent([&]()
+		{
+			this->SelectMeasureMentChart();
+		});
 
-		Objects.push_back(TestChart);
+	TransformComp->SetPosition(UMath::Vector2(300.f, 200.f));
+	TransformComp->SetScale(UMath::Vector2(110.f, 50.f));
 
-		CharGroupComp->PushChart(TestChart);
-	}
-	
+	Objects.push_back(MeasureMentAddBtn);
+
 	// CreateEvent
 	// 1. ResourceAddEvent
 	Callback<void(std::wstring)> AddCallback;
@@ -130,9 +130,6 @@ void Viewer::Begin(HWND WindowHandle)
 			this->AddResource(FilePath);
 		});
 	ResourceAddEvent.Subscribe(AddCallback);
-
-	// 2. ResourceRemoveEvent
-
 }
 
 void Viewer::Update()
@@ -263,5 +260,18 @@ void Viewer::SelectResource()
 		Datas[CurrentListIndex].IsSelected = false;
 		CurrentListIndex = Index;
 		Datas[Index].Selected();
+	}
+}
+
+void Viewer::SelectMeasureMentChart()
+{
+	if (Datas.size() == 3)return;
+	Object* MeasureMentObject = FindObject(L"MeasureMentListObject");
+	ListBox* ListBoxComp = MeasureMentObject->GetComponent<ListBox>();
+
+	if (ListBoxComp)
+	{
+		LRESULT Index = ListBoxComp->GetSelectedIndex();
+		Datas[CurrentListIndex].PushChart(Index);
 	}
 }

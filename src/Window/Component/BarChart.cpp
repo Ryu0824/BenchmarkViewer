@@ -1,3 +1,4 @@
+
 #include "BarChart.h"
 #include "../Object/Object.h"
 #include "../Component/Transform.h"

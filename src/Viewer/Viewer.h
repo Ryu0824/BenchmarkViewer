@@ -30,6 +30,8 @@ private:
 	void RemoveResource();
 	void SelectResource();
 
+	void SelectMeasureMentChart();
+
 	Object* FindObject(const std::wstring& Name)
 	{
 		std::vector<Object*>::iterator iter = Objects.begin();
@@ -53,6 +55,18 @@ private:
 private:
 	class BenchMarkViewerSetting
 	{
+	public:
+		~BenchMarkViewerSetting()
+		{
+			if (BarCharts.empty())return;
+
+			for (size_t i = 0;i < BarCharts.size();++i)
+			{
+				if (BarCharts[i])
+					delete BarCharts[i];
+			}
+		}
+
 	private:
 		void Init(Viewer* Instance)
 		{
@@ -60,6 +74,7 @@ private:
 			SelectTextBoxObject = Instance->FindObject(L"ResourceCurrentSelectBox")->GetComponent<TextBox>();
 			MeasureMentListObject = Instance->FindObject(L"MeasureMentListObject")->GetComponent<ListBox>();
 			EnviromentObject = Instance->FindObject(L"EnviromentListView")->GetComponent<ListView>();
+			ChartGroupObject = Instance->FindObject(L"ChartGroupObject")->GetComponent<ChartGroup>();
 		}
 
 		void Selected()
@@ -75,6 +90,42 @@ private:
 			{
 				MeasureMentListObject->AddRowData(Data.GetMeasurementData()[i]);
 			}
+
+			for (size_t i = 0;i < BarCharts.size();++i)
+			{
+				ChartGroupObject->PushChart(BarCharts[i]);
+			}
+		}
+
+		void PushChart(int Index)
+		{
+			if (BarCharts.size() == 3)return;
+
+			bool Duplicated = false;
+			for (size_t i = 0;i < BarCharts.size();++i)
+			{
+				if (ChartNumber[i] == Index)
+				{
+					Duplicated = true;
+					break;
+				}
+			}
+
+			if (Duplicated)return;
+			// Parsing Data 중 해당 Index 데이터 가져옴
+
+			// Object 생성
+			Object* Chart = new Object;
+			Transform* TransformComp = Chart->AddComponent<Transform>();
+			BarChart* BarChartComp = Chart->AddComponent<BarChart>();
+
+			// Scale 맞추기
+			TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
+			TransformComp->SetScale(UMath::Vector2(800, 150.f));
+
+			ChartGroupObject->PushChart(Chart);
+			ChartNumber.push_back(Index);
+			BarCharts.push_back(Chart);
 		}
 
 		void Reset()
@@ -83,13 +134,17 @@ private:
 			MeasureMentListObject->Reset();
 			EnviromentObject->Reset();
 			MeasureMentListObject->Reset();
+			ChartGroupObject->Reset();
 		}
 
 	private:
 		TextBox* SelectTextBoxObject = nullptr;
 		ListView* EnviromentObject = nullptr;
 		ListBox* MeasureMentListObject = nullptr;
-		//Object* ChartListObject = nullptr;
+		ChartGroup* ChartGroupObject = nullptr;
+
+		std::vector<Object*> BarCharts;
+		std::vector<int> ChartNumber;
 
 		bool IsSelected = false;
 		BenchMarkData Data;
@@ -102,7 +157,6 @@ private:
 	std::vector<BenchMarkViewerSetting> Datas;
 
 	Event<void(std::wstring)> ResourceAddEvent;
-	Event<void()> ResourceRemoveEvent;
 
 	LRESULT CurrentListIndex = 0;
 

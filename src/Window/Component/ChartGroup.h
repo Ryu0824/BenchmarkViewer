@@ -45,6 +45,11 @@ public:
 		return ComponentType::ChartGroup;
 	}
 
+	void Reset()
+	{
+		BarCharts.clear();
+	}
+
 private:
 	std::vector<Object*> BarCharts;
 	UMath::Vector2 Interval;
