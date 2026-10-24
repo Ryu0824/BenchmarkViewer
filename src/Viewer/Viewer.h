@@ -114,6 +114,8 @@ private:
 			if (Duplicated)return;
 			// Parsing Data 중 해당 Index 데이터 가져옴
 
+
+
 			// Object 생성
 			Object* Chart = new Object;
 			Transform* TransformComp = Chart->AddComponent<Transform>();
@@ -123,6 +125,10 @@ private:
 			TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
 			TransformComp->SetScale(UMath::Vector2(800, 150.f));
 
+			// TestValue
+			float TestValue[2][3][3] = { {{20.f,30.f,10.f},{40.f,50.f,20.f},{100.f,20.f,70.f}}, {{20.f,70.f,10.f},{40.f,10.f,20.f},{30.f,20.f,5.f}} };
+
+			BarChartComp->PushData(TestValue);
 			ChartGroupObject->PushChart(Chart);
 			ChartNumber.push_back(Index);
 			BarCharts.push_back(Chart);

@@ -17,6 +17,20 @@ public:
 		return ComponentType::BarChart;
 	}
 
+	void PushData(float Data[2][3][3])
+	{
+		for (int i = 0;i < 2;i++)
+		{
+			for (int j = 0;j < 3;j++)
+			{
+				for (int z = 0;z < 3;z++)
+				{
+					ChartData[i][j][z] = Data[i][j][z];
+				}
+			}
+		}
+	}
+
 private:
 	HWND BarChartHandle;
 	Object* Group;
@@ -28,5 +42,6 @@ private:
 		Index = InIndex;
 	}
 
+	float ChartData[2][3][3];
 	friend class ChartGroup;
 };

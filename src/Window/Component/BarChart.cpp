@@ -49,10 +49,6 @@ void BarChart::Render(HDC dc)
 
 		int GraphInstanceInterval = 3;
 
-		int Value[3][3] =
-		{
-			{20,30,40},{60,70,100},{20,100,50}
-		};
 		int MaxValue = 200;
 
 
@@ -97,7 +93,7 @@ void BarChart::Render(HDC dc)
 				for (int z = 0;z < GraphInstance;z++)
 				{
 					int GraphInstanceleft = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * z;
-					int GraphInstancetop = GraphGroupbottom - ((float)(GraphInstanceHeight) * (float)Value[j][z] / (float)MaxValue);
+					int GraphInstancetop = GraphGroupbottom - ((float)(GraphInstanceHeight) *ChartData[i][j][z] / (float)MaxValue);
 					int GraphInstanceright = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * (z + 1);
 					int GraphInstancebottom = GraphGroupbottom;
 

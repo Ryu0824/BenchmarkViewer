@@ -13,6 +13,7 @@ public:
 
 	std::vector<std::wstring>& GetMeasurementData() { return MeasureMentData; }
 	std::vector<std::wstring>& GetEnviromentData() { return EnviromentData; }
+	//std::vector<std::wstring>& GetChartContent();
 
 private:
 	void EnviromentParsing();
