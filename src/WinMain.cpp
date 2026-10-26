@@ -24,6 +24,12 @@
 #include <string>
 #include <vector>
 
+#ifdef _DEBUG
+#include <cstdlib>
+#include <crtdbg.h>
+#endif // _DEBUG
+
+
 #include "Window/WindowClass.h"
 
 //namespace
@@ -520,6 +526,18 @@
 
 int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, PWSTR, int show)
 {
+#ifdef _DEBUG
+
+	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_DEBUG);
+
+	const int Flags = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);
+
+	_CrtSetDbgFlag(
+		Flags |
+		_CRTDBG_ALLOC_MEM_DF |
+		_CRTDBG_LEAK_CHECK_DF
+	);
+#endif
 	WindowClass Class;
 
 	Class.Begin(instance);
@@ -532,7 +550,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, PWSTR, int show)
 	{
 		Class.BeginFrame();
 
-		while (PeekMessage(&msg, Class.GetWindowHandle(), 0, 0, PM_REMOVE))
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
 			{
@@ -552,57 +570,6 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prevInstance, PWSTR, int show)
 
 	Class.End();
 
-	//SetProcessDPIAware();
-	//INITCOMMONCONTROLSEX controls{ sizeof(INITCOMMONCONTROLSEX), ICC_LISTVIEW_CLASSES };
-	//if (!InitCommonControlsEx(&controls))return 1;
-	//WNDCLASSEXW wc{};wc.cbSize = sizeof(wc); wc.lpfnWndProc = WindowProc; wc.hInstance = instance;
-	//wc.lpszClassName = L"StandaloneBenchmarkViewer"; wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
-	//wc.hIcon = LoadIconW(nullptr, IDI_APPLICATION);
-	//if (!RegisterClassExW(&wc)) return 1;
-	//Viewer app;
-	//HWND h = CreateWindowExW(WS_EX_CONTROLPARENT, wc.lpszClassName, L"Memory Benchmark Viewer", WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN,
-	//	CW_USEDEFAULT, CW_USEDEFAULT, 1320, 900, nullptr, nullptr, instance, &app);
-
-	//if (!h)
-	//{
-	//	const DWORD error_code = h ? ERROR_SUCCESS : GetLastError();
-	//	wchar_t error_string[64];
-	//	swprintf_s(error_string, _countof(error_string), L"CreateWindowExW is Failed : %lu", error_code);
-	//	MessageBoxW(nullptr, error_string, L"Fatal : Initialize is Failed", MB_OK | MB_ICONERROR);
-	//	return 1;
-	//}
-
-	//ShowWindow(h, show);
-	//UpdateWindow(h);
-
-	//int argc = 0; LPWSTR* argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-	//if (argv)
-	//{
-	//	std::vector<std::filesystem::path> paths;
-	//	for (int i = 1;i < argc;++i)
-	//		paths.emplace_back(argv[i]);
-	//	LocalFree(argv);
-	//	if (!paths.empty())
-	//		app.Load(paths);
-	//}
-	//MSG message{};
-
-	//int result;
-
-	//while ((result = static_cast<int>(GetMessageW(&message, nullptr, 0, 0))) > 0)
-	//{
-	//	if (message.message == WM_KEYDOWN && message.wParam == '0' && (GetKeyState(VK_CONTROL) & 0x8000))
-	//	{
-	//		SendMessageW(h, WM_COMMAND, Open, 0);
-	//		continue;
-	//	}
-
-	//	if (!IsDialogMessageW(h, &message))
-	//	{
-	//		TranslateMessage(&message);
-	//		DispatchMessageW(&message);
-	//	}
-	//}
 
 	return 0;
 }

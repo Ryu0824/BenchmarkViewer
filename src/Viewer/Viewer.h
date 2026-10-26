@@ -25,7 +25,6 @@ public:
 
 private:
 	bool OpenFile();
-
 	void AddResource(std::wstring FilePath);
 	void RemoveResource();
 	void SelectResource();
