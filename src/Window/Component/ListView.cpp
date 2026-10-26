@@ -23,7 +23,7 @@ void ListView::Begin(HWND WindowHandle)
 
 	ListView_SetExtendedListViewStyle(
 		ListViewHandle,
-		LVS_EX_GRIDLINES,
+		LVS_EX_GRIDLINES |
 		LVS_EX_FULLROWSELECT |
 		LVS_EX_DOUBLEBUFFER
 	);

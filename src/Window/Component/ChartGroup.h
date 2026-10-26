@@ -24,7 +24,7 @@ public:
 		BarChart* ChartComp = Chart->GetComponent<BarChart>();
 		if (ChartComp)
 		{
-			ChartComp->SetGroup(GetOwner(), BarCharts.size());
+			ChartComp->SetGroup(GetOwner(), static_cast<int>(BarCharts.size()));
 			BarCharts.push_back(Chart);
 		}
 	}

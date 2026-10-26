@@ -34,8 +34,8 @@ void BarChart::Render(HDC dc)
 		Rectangle(dc, Left, Top, Right, Bottom);
 
 		int Interval = 5;
-		int SlotWidth = (Scale.x - 3 * Interval) / 2.f;
-		int SlotHeight = (Scale.y - 2 * Interval);
+		int SlotWidth = int((Scale.x - (float)(3 * Interval)) / 2.f);
+		int SlotHeight = int(Scale.y - (float)(2 * Interval));
 
 		int SlotIndex = 2;
 		int SlotGraphGroup = 3;
@@ -45,7 +45,6 @@ void BarChart::Render(HDC dc)
 		int GraphIntervalY = 10;
 
 		int GraphGroupIntervalX = 50;
-		int GraphGroupIntervalY = 50;
 
 		int GraphInstanceInterval = 3;
 
@@ -56,9 +55,9 @@ void BarChart::Render(HDC dc)
 		for (int i = 0;i < SlotIndex;i++)
 		{
 			int Slotleft = Left + Interval * (i + 1) + i * SlotWidth;
-			int Slottop = Position.y - SlotHeight / 2.f;
+			int Slottop = (int)(Position.y - (float)SlotHeight / 2.f);
 			int Slotright = Left + Interval * (i + 1) + (i + 1) * (SlotWidth);
-			int Slotbottom = Position.y + SlotHeight / 2.f;
+			int Slotbottom = (int)(Position.y + (float)SlotHeight / 2.f);
 
 			Rectangle(dc, Slotleft, Slottop, Slotright, Slotbottom);
 
@@ -72,16 +71,13 @@ void BarChart::Render(HDC dc)
 			LineTo(dc, GraphLineRight, GraphLineBottom);
 
 			int GraphWidth = GraphLineRight - GraphLineLeft;
-			int GraphHeight = GraphLineBottom - GraphLineTop;
 
 			int GraphGroupWidth = (GraphWidth - 3 * GraphGroupIntervalX) / SlotGraphGroup;
-			int GraphGroupHeight = (GraphHeight - 2 * GraphGroupIntervalX);
 
 			// 그래프 그룹 3개
 			for (int j = 0;j < SlotGraphGroup;j++)
 			{
-				int GraphGroupleft = GraphLineLeft + (GraphGroupIntervalX / 2.f) * (2 * j + 1) + j * GraphGroupWidth;
-				int GraphGroupright = GraphLineLeft + (GraphGroupIntervalX / 2.f) * (2 * j + 1) + (j + 1) * (GraphGroupWidth);
+				int GraphGroupleft = int((float)GraphLineLeft + ((float)GraphGroupIntervalX / 2.f) * (float)((2 * j + 1) + j * GraphGroupWidth));
 				int GraphGroupbottom = GraphLineBottom;
 
 				//Rectangle(dc, GraphGroupleft, GraphGrouptop, GraphGroupright, GraphGroupbottom);
@@ -93,7 +89,7 @@ void BarChart::Render(HDC dc)
 				for (int z = 0;z < GraphInstance;z++)
 				{
 					int GraphInstanceleft = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * z;
-					int GraphInstancetop = GraphGroupbottom - ((float)(GraphInstanceHeight) *ChartData[i][j][z] / (float)MaxValue);
+					int GraphInstancetop = int(GraphGroupbottom - ((float)(GraphInstanceHeight)*ChartData[i][j][z] / (float)MaxValue));
 					int GraphInstanceright = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * (z + 1);
 					int GraphInstancebottom = GraphGroupbottom;
 

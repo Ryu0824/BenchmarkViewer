@@ -42,6 +42,5 @@ public:
 private:
 	bool Interactive();
 	ButtonState State;
-
 	Event<void()> OnClickEvent;
 };

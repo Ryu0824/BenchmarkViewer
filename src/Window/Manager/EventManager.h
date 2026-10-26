@@ -105,6 +105,8 @@ public:
 		return *event;
 	}
 	 
+	void End();
+
 private:
 	EventManager() = default;
 	~EventManager() = default;

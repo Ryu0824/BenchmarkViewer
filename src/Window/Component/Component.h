@@ -26,20 +26,22 @@ concept HasStaticCompType = requires
 class Component
 {
 public:
+	virtual ~Component() = default;
+
 	virtual void Begin(HWND WindowHandle) = 0;
 	virtual void Update() = 0;
 	virtual void Render(HDC dc) {};
 	virtual void End() = 0;
 
 	void SetOwner(Object* owner) { Owner = owner; }
-	Object* GetOwner() const { return Owner;}
+	Object* GetOwner() const { return Owner; }
 
 private:
 	Object* Owner;
 };
 
 template<typename T>
-concept ValidComponent = std::derived_from<T, Component> && HasStaticCompType<T>;
+concept ValidComponent = std::derived_from<T, Component>&& HasStaticCompType<T>;
 
 template<ValidComponent T>
 ComponentType GetCompType()
