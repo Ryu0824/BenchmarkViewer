@@ -12,7 +12,7 @@ public:
 	{
 		for (uint32_t i = 0;i < (uint32_t)ComponentType::End;++i)
 		{
-			if (Comps[i])
+			if (Comps[i])	
 			{
 				delete Comps[i];
 				Comps[i] = nullptr;

@@ -152,11 +152,14 @@ void Viewer::Render(HDC dc)
 
 void Viewer::End()
 {
-	for (auto object : Objects)
+	for (auto Obj : Objects)
 	{
-		if (object)
+		if (Obj)
 		{
-			object->End();
+			Obj->End();
+
+			delete Obj;
+			Obj = nullptr;
 		}
 	}
 }

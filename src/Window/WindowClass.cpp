@@ -150,6 +150,8 @@ void WindowClass::End()
 	ReleaseDC(WindowHandle, DeviceContext);
 
 	ViewInstance.End();
+
+	EventManager::GetInstance().End();
 }
 
 void WindowClass::Resize()
