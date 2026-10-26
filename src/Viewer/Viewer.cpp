@@ -100,7 +100,6 @@ void Viewer::Begin(HWND WindowHandle)
 	Object* ChartGroupObject = new Object;
 	ChartGroupObject->SetName(L"ChartGroupObject");
 	TransformComp = ChartGroupObject->AddComponent<Transform>();
-	ChartGroup* CharGroupComp = ChartGroupObject->AddComponent<ChartGroup>();
 
 	TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));
 	TransformComp->SetScale(UMath::Vector2(800, 450.f));
@@ -239,7 +238,7 @@ void Viewer::RemoveResource()
 		ListBox* ListBoxComp = ListBoxObject->GetComponent<ListBox>();
 		LRESULT Index = ListBoxComp->GetSelectedIndex();
 
-		if (Index >= Datas.size()) return;
+		if (static_cast<size_t>(Index) >= Datas.size()) return;
 
 		BenchMarkViewerSetting BenchMarkData = Datas[Index];
 		if (BenchMarkData.IsSelected)
@@ -260,7 +259,7 @@ void Viewer::SelectResource()
 	if (ListBoxComp)
 	{
 		LRESULT Index = ListBoxComp->GetSelectedIndex();
-		if (Index >= Datas.size())return;
+		if (static_cast<size_t>(Index) >= Datas.size())return;
 
 		Datas[CurrentListIndex].IsSelected = false;
 		CurrentListIndex = Index;
@@ -277,6 +276,6 @@ void Viewer::SelectMeasureMentChart()
 	if (ListBoxComp)
 	{
 		LRESULT Index = ListBoxComp->GetSelectedIndex();
-		Datas[CurrentListIndex].PushChart(Index);
+		Datas[CurrentListIndex].PushChart(static_cast<int>(Index));
 	}
 }

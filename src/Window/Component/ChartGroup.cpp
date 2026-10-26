@@ -29,10 +29,10 @@ void ChartGroup::Render(HDC dc)
 	UMath::Vector2 Position = TransformComp->GetPosition();
 	UMath::Vector2 Scale = TransformComp->GetScale();
 
-	int Left = Position.x - Scale.x / 2.f;
-	int Top = Position.y - Scale.y / 2.f;
-	int Right = Position.x + Scale.x / 2.f;
-	int Bottom = Position.y + Scale.y / 2.f;
+	int Left = int(Position.x - Scale.x / 2.f);
+	int Top = int(Position.y - Scale.y / 2.f);
+	int Right = int(Position.x + Scale.x / 2.f);
+	int Bottom = int(Position.y + Scale.y / 2.f);
 
 	Rectangle(dc, Left, Top, Right, Bottom);
 
