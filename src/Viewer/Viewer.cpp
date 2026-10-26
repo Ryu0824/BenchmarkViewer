@@ -155,7 +155,9 @@ void Viewer::End()
 	for (auto object : Objects)
 	{
 		if (object)
+		{
 			object->End();
+		}
 	}
 }
 
