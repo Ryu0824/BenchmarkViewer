@@ -136,6 +136,7 @@ void WindowClass::Update()
 
 	ViewInstance.Update();
 
+	// Render Layer
 	RenderManager::GetInstance().Begin(255, 255, 255);
 
 	ViewInstance.Render(RenderManager::GetInstance().GetBackDC());
