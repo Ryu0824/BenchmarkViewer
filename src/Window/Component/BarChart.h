@@ -43,5 +43,6 @@ private:
 	}
 
 	float ChartData[2][3][3];
+	float ChartColor[3][3];
 	friend class ChartGroup;
 };
