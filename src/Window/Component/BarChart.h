@@ -31,6 +31,8 @@ public:
 		}
 	}
 
+	void SetChartColor(int Index, float RGB[3]) { ChartColor[Index] = RGB; }
+
 private:
 	HWND BarChartHandle;
 	Object* Group;
