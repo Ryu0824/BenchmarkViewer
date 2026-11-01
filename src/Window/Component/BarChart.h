@@ -31,7 +31,13 @@ public:
 		}
 	}
 
-	void SetChartColor(int Index, float RGB[3]) { ChartColor[Index] = RGB; }
+	void SetChartColor(int Index, float RGB[3]) 
+	{ 
+		for (int i = 0;i < 3;i++) 
+		{
+			ChartColor[Index][i] = RGB[i];
+		}
+	}
 
 private:
 	HWND BarChartHandle;
