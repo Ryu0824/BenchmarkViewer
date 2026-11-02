@@ -99,6 +99,7 @@ void Viewer::Begin(HWND WindowHandle)
 	// BenchMark Chart
 	Object* ChartGroupObject = new Object;
 	ChartGroupObject->SetName(L"ChartGroupObject");
+	ChartGroupObject->AddComponent<ChartGroup>();
 	TransformComp = ChartGroupObject->AddComponent<Transform>();
 
 	TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));

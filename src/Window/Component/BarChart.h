@@ -31,6 +31,14 @@ public:
 		}
 	}
 
+	void SetChartColor(int GroupIndex, float RGB[3]) 
+	{ 
+		for (int i = 0;i < 3;i++) 
+		{
+			ChartColor[GroupIndex][i] = RGB[i];
+		}
+	}
+
 private:
 	HWND BarChartHandle;
 	Object* Group;
@@ -43,5 +51,6 @@ private:
 	}
 
 	float ChartData[2][3][3];
+	float ChartColor[3][3];
 	friend class ChartGroup;
 };

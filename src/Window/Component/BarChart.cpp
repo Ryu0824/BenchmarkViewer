@@ -50,7 +50,6 @@ void BarChart::Render(HDC dc)
 
 		int MaxValue = 200;
 
-
 		// 작은 슬롯 2개
 		for (int i = 0;i < SlotIndex;i++)
 		{
@@ -77,23 +76,32 @@ void BarChart::Render(HDC dc)
 			// 그래프 그룹 3개
 			for (int j = 0;j < SlotGraphGroup;j++)
 			{
-				int GraphGroupleft = int((float)GraphLineLeft + ((float)GraphGroupIntervalX / 2.f) * (float)((2 * j + 1) + j * GraphGroupWidth));
+				int GraphGroupleft = int((float)GraphLineLeft + ((float)GraphGroupIntervalX / 2.f) * (float)(2 * j + 1) + (float)(j * GraphGroupWidth));
 				int GraphGroupbottom = GraphLineBottom;
-
-				//Rectangle(dc, GraphGroupleft, GraphGrouptop, GraphGroupright, GraphGroupbottom);
 
 				int GraphInstanceWidth = (GraphGroupWidth - 2 * GraphInstanceInterval) / GraphInstance;
 				int GraphInstanceHeight = GraphLineBottom - GraphLineTop;
 
 				// 그래프 그룹 내 실제 그래프 인스턴스 3개
-				for (int z = 0;z < GraphInstance;z++)
+				for (int z = 0;z < GraphInstance; z++)
 				{
-					int GraphInstanceleft = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * z;
+					HPEN GraphInstancePen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+					HBRUSH GraphInstanceBrush = CreateSolidBrush(RGB(255, 0, 0));
+
+					HGDIOBJ PrevPen = SelectObject(dc, GraphInstancePen);
+					HGDIOBJ PrevBrush = SelectObject(dc, GraphInstanceBrush);
+
+					int GraphInstanceleft = GraphGroupleft + (GraphInstanceInterval) * z + GraphInstanceWidth * z;
 					int GraphInstancetop = int(GraphGroupbottom - ((float)(GraphInstanceHeight)*ChartData[i][j][z] / (float)MaxValue));
-					int GraphInstanceright = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * (z + 1);
+					int GraphInstanceright = GraphGroupleft + (GraphInstanceInterval) * z + GraphInstanceWidth * (z + 1);
 					int GraphInstancebottom = GraphGroupbottom;
 
 					Rectangle(dc, GraphInstanceleft, GraphInstancetop, GraphInstanceright, GraphInstancebottom);
+
+					SelectObject(dc, PrevPen);
+					SelectObject(dc, PrevBrush);
+					DeleteObject(GraphInstancePen);
+					DeleteObject(GraphInstanceBrush);
 				}
 			}
 		}
@@ -102,56 +110,6 @@ void BarChart::Render(HDC dc)
 		SelectObject(dc, OldBrush);
 		DeleteObject(Pen);
 	}
-
-	//const int Values[] = { 40,80,60 };
-	//constexpr int Count = 3;
-	//constexpr int MaxValue = 100;
-
-	//const int Left = 40;
-	//const int Top = 20;
-	//const int Bottom = Client.bottom - 30;
-	//const int PlotWidth = Client.right - Left - 20;
-	//const int PlotHeight = Bottom - Top;
-
-	//if (PlotWidth >= Count && PlotHeight > 0)
-	//{
-	//	HGDIOBJ OldPen = SelectObject(dc, GetStockObject(BLACK_PEN));
-
-	//	MoveToEx(dc, Left, Top, nullptr);
-	//	LineTo(dc, Left, Bottom);
-	//	LineTo(dc, Left + PlotWidth, Bottom);
-
-	//	SelectObject(dc, OldPen);
-
-	//	//HBRUSH Brush = CreateSolidBrush(RGB(70, 130, 220));
-
-	//	//if (Brush)
-	//	//{
-	//	//	const int SlotWidth = PlotWidth / Count;
-	//	//	const int BarWidth =
-	//	//		SlotWidth > 1 ? SlotWidth / 2 : 1;
-
-	//	//	for (int Index = 0;Index < Count;++Index)
-	//	//	{
-	//	//		const int Height =
-	//	//			PlotHeight * Values[Index] / MaxValue;
-
-	//	//		const int X =
-	//	//			Left + Index * SlotWidth
-	//	//			+ (SlotWidth - BarWidth) / 2;
-
-	//	//		RECT Bar = {
-	//	//			X,
-	//	//			Bottom - Height,
-	//	//			X + BarWidth,
-	//	//			Bottom
-	//	//		};
-
-	//	//		FillRect(dc, &Bar, Brush);
-	//	//	}
-
-	//	//	DeleteObject(Brush);
-	//	//}
 }
 
 void BarChart::End()
