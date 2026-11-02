@@ -76,7 +76,7 @@ void BarChart::Render(HDC dc)
 			// 그래프 그룹 3개
 			for (int j = 0;j < SlotGraphGroup;j++)
 			{
-				int GraphGroupleft = int((float)GraphLineLeft + ((float)GraphGroupIntervalX / 2.f) * (float)((2 * j + 1) + j * GraphGroupWidth));
+				int GraphGroupleft = int((float)GraphLineLeft + ((float)GraphGroupIntervalX / 2.f) * (float)(2 * j + 1) + (float)(j * GraphGroupWidth));
 				int GraphGroupbottom = GraphLineBottom;
 
 				int GraphInstanceWidth = (GraphGroupWidth - 2 * GraphInstanceInterval) / GraphInstance;
@@ -85,23 +85,23 @@ void BarChart::Render(HDC dc)
 				// 그래프 그룹 내 실제 그래프 인스턴스 3개
 				for (int z = 0;z < GraphInstance; z++)
 				{
-			/*		HPEN GraphInstancePen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+					HPEN GraphInstancePen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
 					HBRUSH GraphInstanceBrush = CreateSolidBrush(RGB(255, 0, 0));
 
 					HGDIOBJ PrevPen = SelectObject(dc, GraphInstancePen);
-					HGDIOBJ PrevBrush = SelectObject(dc, GraphInstanceBrush);*/
+					HGDIOBJ PrevBrush = SelectObject(dc, GraphInstanceBrush);
 
-					int GraphInstanceleft = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * z;
+					int GraphInstanceleft = GraphGroupleft + (GraphInstanceInterval) * z + GraphInstanceWidth * z;
 					int GraphInstancetop = int(GraphGroupbottom - ((float)(GraphInstanceHeight)*ChartData[i][j][z] / (float)MaxValue));
-					int GraphInstanceright = GraphGroupleft + (GraphInstanceInterval)*z + GraphInstanceWidth * (z + 1);
+					int GraphInstanceright = GraphGroupleft + (GraphInstanceInterval) * z + GraphInstanceWidth * (z + 1);
 					int GraphInstancebottom = GraphGroupbottom;
 
 					Rectangle(dc, GraphInstanceleft, GraphInstancetop, GraphInstanceright, GraphInstancebottom);
 
-					//SelectObject(dc, PrevPen);
-					//SelectObject(dc, PrevBrush);
-					//DeleteObject(GraphInstancePen);
-					//DeleteObject(GraphInstanceBrush);
+					SelectObject(dc, PrevPen);
+					SelectObject(dc, PrevBrush);
+					DeleteObject(GraphInstancePen);
+					DeleteObject(GraphInstanceBrush);
 				}
 			}
 		}
