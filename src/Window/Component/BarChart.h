@@ -31,11 +31,11 @@ public:
 		}
 	}
 
-	void SetChartColor(int Index, float RGB[3]) 
+	void SetChartColor(int GroupIndex, float RGB[3]) 
 	{ 
 		for (int i = 0;i < 3;i++) 
 		{
-			ChartColor[Index][i] = RGB[i];
+			ChartColor[GroupIndex][i] = RGB[i];
 		}
 	}
 

@@ -83,7 +83,7 @@ void BarChart::Render(HDC dc)
 				int GraphInstanceHeight = GraphLineBottom - GraphLineTop;
 
 				// 그래프 그룹 내 실제 그래프 인스턴스 3개
-				for (int z = 0;z < GraphInstance;z++)
+				for (int z = 0;z < GraphInstance; z++)
 				{
 			/*		HPEN GraphInstancePen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
 					HBRUSH GraphInstanceBrush = CreateSolidBrush(RGB(255, 0, 0));
