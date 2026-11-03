@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Asset.h"
+#include <Windows.h>
+#include <objidl.h>
+#include <gdiplus.h>
 
 class Texture2D :public Asset
 {
@@ -10,5 +13,5 @@ public:
 	virtual bool Load(const std::wstring& Path);
 
 private:
-	Gdiplus::Image Image;
+	Gdiplus::Image* Source;
 };

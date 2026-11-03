@@ -1,11 +1,11 @@
 #include "WindowClass.h"
+#include "Manager/AssetManager.h"
 #include "Manager/InputManager.h"
 #include "Manager/ConsoleManager.h"
 #include "Manager/TimeManager.h"
 #include "Manager/RenderManager.h"
 #include "Manager/EventManager.h"
 #include "Manager/PathManager.h"
-#include "Manager/AssetManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {

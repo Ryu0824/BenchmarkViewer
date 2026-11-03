@@ -24,6 +24,8 @@ if(WIN32)
 		src/Window/Component/ListView.cpp
 		src/Window/Component/BarChart.cpp
 		src/Window/Component/ChartGroup.cpp
+		src/Window/Asset/Asset.cpp
+		src/Window/Asset/Texture2D.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
 		src/Window/Manager/RenderManager.cpp
@@ -41,7 +43,7 @@ if(WIN32)
 	VERBATIM)
 
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
-	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdi32 gdiplus comdlg32 comctl32 shell32)
+	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdiplus comdlg32 comctl32 shell32)
 	configure_target(BenchmarkViewer)
 	if(MINGW)
 		target_link_options(BenchmarkViewer PRIVATE -municode)

@@ -32,7 +32,7 @@ public:
 		if (iter != Assets.end())
 		{
 #ifdef _DEBUG
-			printf("AssetManager AddAsset Func : %ls Already Exists Key this Asset\n");
+			printf("AssetManager AddAsset Func : %ls Already Exists Key this Asset\n",FilePath.c_str());
 #endif
 			return;
 		}
@@ -41,6 +41,10 @@ public:
 		if (Asset->Load(FilePath))
 		{
 			Assets.insert({ FilePath, Asset });
+
+#ifdef _DEBUG
+			printf("AssetManager AddAsset Func : %ls Asset Load Successed!!\n", FilePath.c_str());
+#endif
 		}
 	}
 
