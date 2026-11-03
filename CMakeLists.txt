@@ -31,6 +31,7 @@ if(WIN32)
 		src/Window/Manager/RenderManager.cpp
 		src/Window/Manager/EventManager.cpp
 		src/Window/Manager/PathManager.cpp
+		src/Window/Manager/AssetManager.cpp
 	)
 
 	add_custom_command(TARGET BenchmarkViewer POST_BUILD

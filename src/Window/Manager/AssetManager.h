@@ -2,6 +2,9 @@
 
 #include <Windows.h>
 #include <gdiplus.h>
+#include <unordered_map>
+#include <string>
+#include "../Asset/Asset.h"
 
 class AssetManager
 {
@@ -21,6 +24,26 @@ public:
 	AssetManager& operator=(const AssetManager&) = delete;
 	AssetManager& operator=(AssetManager&&) = delete;
 
+	template<typename T>
+	void AddAsset(const std::wstring& FilePath)
+	{
+		std::unordered_map<std::wstring, Asset*>::iterator iter = Assets.find(FilePath);
+
+		if (iter != Assets.end())
+		{
+#ifdef _DEBUG
+			printf("AssetManager AddAsset Func : %ls Already Exists Key this Asset\n");
+#endif
+			return;
+		}
+
+		T* Asset = new T;
+		if (Asset->Load(FilePath))
+		{
+			Assets.insert({ FilePath, Asset });
+		}
+	}
+
 private:
 	AssetManager() = default;
 	~AssetManager() = default;
@@ -29,4 +52,6 @@ private:
 
 private:
 	ULONG_PTR GdiPlusToken = 0;
+
+	std::unordered_map<std::wstring, Asset*> Assets;
 };

@@ -5,6 +5,7 @@
 #include "Manager/RenderManager.h"
 #include "Manager/EventManager.h"
 #include "Manager/PathManager.h"
+#include "Manager/AssetManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -86,6 +87,8 @@ void WindowClass::Begin(HINSTANCE Instance)
 #endif
 	PathManager::GetInstance().Begin();
 
+	AssetManager::GetInstance().Begin();
+
 	TimeManager::GetInstance().Begin();
 
 	Event<void()>& ResizeEvent = EventManager::GetInstance().Create<void()>(EventID::WindowResize);
@@ -155,6 +158,8 @@ void WindowClass::End()
 	ViewInstance.End();
 
 	EventManager::GetInstance().End();
+
+	AssetManager::GetInstance().End();
 }
 
 void WindowClass::Resize()
