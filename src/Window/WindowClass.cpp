@@ -4,6 +4,7 @@
 #include "Manager/TimeManager.h"
 #include "Manager/RenderManager.h"
 #include "Manager/EventManager.h"
+#include "Manager/PathManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -83,6 +84,7 @@ void WindowClass::Begin(HINSTANCE Instance)
 #ifdef _DEBUG
 	ConsoleManager::GetInstance().Begin();
 #endif
+	PathManager::GetInstance().Begin();
 
 	TimeManager::GetInstance().Begin();
 

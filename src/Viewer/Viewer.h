@@ -119,6 +119,18 @@ private:
 			Object* Chart = new Object;
 			Transform* TransformComp = Chart->AddComponent<Transform>();
 			BarChart* BarChartComp = Chart->AddComponent<BarChart>();
+			float RGB[3] = { 255.f,0.0f,0.0f };
+			BarChartComp->SetChartColor(0, RGB);
+			
+			RGB[0] = 0.0f;
+			RGB[1] = 255.0f;
+			RGB[2] = 0.0f;
+			BarChartComp->SetChartColor(1, RGB);
+
+			RGB[0] = 0.0f;
+			RGB[1] = 0.0f;
+			RGB[2] = 255.0f;
+			BarChartComp->SetChartColor(2, RGB);
 
 			// Scale 맞추기
 			TransformComp->SetPosition(UMath::Vector2(800.f, 400.f));

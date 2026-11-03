@@ -1,0 +1,14 @@
+#pragma once
+
+#include "Asset.h"
+
+class Texture2D :public Asset
+{
+public:
+	Texture2D() = default;
+	virtual Texture2D();
+	virtual void Load();
+
+private:
+	Gdiplus
+};

@@ -1,6 +1,7 @@
 #pragma once
 
-#include<Windows.h>
+#include <Windows.h>
+#include <gdiplus.h>
 
 class RenderManager
 {
