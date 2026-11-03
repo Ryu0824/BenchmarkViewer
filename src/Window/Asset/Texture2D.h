@@ -12,6 +12,8 @@ public:
 	virtual ~Texture2D();
 	virtual bool Load(const std::wstring& Path);
 
+	Gdiplus::Image* GetSource() { return Source; }
+
 private:
 	Gdiplus::Image* Source;
 };

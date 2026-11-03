@@ -13,6 +13,7 @@
 #include "../Window/Component/ListView.h"
 #include "../Window/Component/BarChart.h"
 #include "../Window/Component/ChartGroup.h"
+#include "../Window/Component/Renderer.h"
 #include "../BenchmarkData/BenchmarkData.h"
 
 class Viewer

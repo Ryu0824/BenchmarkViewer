@@ -48,6 +48,30 @@ public:
 		}
 	}
 
+	template<typename T>
+	T* GetAsset(const std::wstring& FilePath)
+	{
+		std::unordered_map<std::wstring, Asset*>::iterator iter = Assets.find(FilePath);
+
+		if (iter == Assets.end())
+		{
+#ifdef _DEBUG
+			printf("AssetManager GetAsset Func : %ls not Exists Key this Asset\n", FilePath.c_str());
+#endif
+			return nullptr;
+		}
+
+		if (!iter->second)
+		{
+#ifdef _DEBUG
+			printf("AssetManager GetAsset Func : %ls is nullptr Asset\n", FilePath.c_str());
+#endif
+			return nullptr;
+		}
+
+		return dynamic_cast<T*>(iter->second);
+	}
+
 private:
 	AssetManager() = default;
 	~AssetManager() = default;

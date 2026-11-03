@@ -1,11 +1,24 @@
 #include "Viewer.h"
 
+#include "../Window/Manager/AssetManager.h"
+
 void Viewer::Begin(HWND WindowHandle)
 {
+	// 0. BackGround
+	Object* BackGroundObject = new Object;
+	Transform* TransformComp = BackGroundObject->AddComponent<Transform>();
+	Renderer* RenderComp = BackGroundObject->AddComponent<Renderer>();
+
+	RenderComp->SetTexture(AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\BackGroundImage.png"));
+	TransformComp->SetPosition(UMath::Vector2(640.f, 360.f));
+	TransformComp->SetScale(UMath::Vector2(1280.f, 720.f));
+
+	Objects.push_back(BackGroundObject);
+
 	// 4 Object
 	// 1-1. BenchMark Resource Add Button
 	Object* ResourceAddBtn = new Object;
-	Transform* TransformComp = ResourceAddBtn->AddComponent<Transform>();
+	TransformComp = ResourceAddBtn->AddComponent<Transform>();
 	Button* ButtonComp = ResourceAddBtn->AddComponent<Button>();
 
 	ButtonComp->SetClickEvent([&]()

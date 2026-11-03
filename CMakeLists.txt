@@ -24,6 +24,7 @@ if(WIN32)
 		src/Window/Component/ListView.cpp
 		src/Window/Component/BarChart.cpp
 		src/Window/Component/ChartGroup.cpp
+		src/Window/Component/Renderer.cpp
 		src/Window/Asset/Asset.cpp
 		src/Window/Asset/Texture2D.cpp
 		src/Window/Manager/InputManager.cpp
