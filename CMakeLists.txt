@@ -24,15 +24,27 @@ if(WIN32)
 		src/Window/Component/ListView.cpp
 		src/Window/Component/BarChart.cpp
 		src/Window/Component/ChartGroup.cpp
+		src/Window/Component/Renderer.cpp
+		src/Window/Asset/Asset.cpp
+		src/Window/Asset/Texture2D.cpp
 		src/Window/Manager/InputManager.cpp
 		src/Window/Manager/ConsoleManager.cpp
 		src/Window/Manager/RenderManager.cpp
 		src/Window/Manager/TimeManager.cpp
 		src/Window/Manager/RenderManager.cpp
-		src/Window/Manager/EventManager.cpp)
+		src/Window/Manager/EventManager.cpp
+		src/Window/Manager/PathManager.cpp
+		src/Window/Manager/AssetManager.cpp
+	)
+
+	add_custom_command(TARGET BenchmarkViewer POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+		"${CMAKE_CURRENT_SOURCE_DIR}/Asset"
+		"$<TARGET_FILE_DIR:BenchmarkViewer>/Asset"
+	VERBATIM)
 
 	target_compile_definitions(BenchmarkViewer PRIVATE UNICODE _UNICODE)
-	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdi32 comdlg32 comctl32 shell32)
+	target_link_libraries(BenchmarkViewer PRIVATE BenchmarkData user32 gdiplus comdlg32 comctl32 shell32)
 	configure_target(BenchmarkViewer)
 	if(MINGW)
 		target_link_options(BenchmarkViewer PRIVATE -municode)

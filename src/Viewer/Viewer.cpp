@@ -1,12 +1,28 @@
 #include "Viewer.h"
 
+#include "../Window/Manager/AssetManager.h"
+
 void Viewer::Begin(HWND WindowHandle)
 {
+	// 0. BackGround
+	Object* BackGroundObject = new Object;
+	Transform* TransformComp = BackGroundObject->AddComponent<Transform>();
+	Renderer* RenderComp = BackGroundObject->AddComponent<Renderer>();
+
+	RenderComp->SetTexture(AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\BackGroundImage.png"));
+	TransformComp->SetPosition(UMath::Vector2(640.f, 360.f));
+	TransformComp->SetScale(UMath::Vector2(1280.f, 720.f));
+
+	Objects.push_back(BackGroundObject);
+
 	// 4 Object
 	// 1-1. BenchMark Resource Add Button
 	Object* ResourceAddBtn = new Object;
-	Transform* TransformComp = ResourceAddBtn->AddComponent<Transform>();
+	TransformComp = ResourceAddBtn->AddComponent<Transform>();
 	Button* ButtonComp = ResourceAddBtn->AddComponent<Button>();
+
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
 
 	ButtonComp->SetClickEvent([&]()
 		{
@@ -23,6 +39,9 @@ void Viewer::Begin(HWND WindowHandle)
 	TransformComp = ResourecRemoveBtn->AddComponent<Transform>();
 	ButtonComp = ResourecRemoveBtn->AddComponent<Button>();
 
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
+
 	ButtonComp->SetClickEvent([&]()
 		{
 			this->RemoveResource();
@@ -37,6 +56,9 @@ void Viewer::Begin(HWND WindowHandle)
 	Object* ResourceSelectBtn = new Object;
 	TransformComp = ResourceSelectBtn->AddComponent<Transform>();
 	ButtonComp = ResourceSelectBtn->AddComponent<Button>();
+
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
 
 	ButtonComp->SetClickEvent([&]()
 		{
@@ -116,6 +138,9 @@ void Viewer::Begin(HWND WindowHandle)
 		{
 			this->SelectMeasureMentChart();
 		});
+
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
 
 	TransformComp->SetPosition(UMath::Vector2(300.f, 200.f));
 	TransformComp->SetScale(UMath::Vector2(110.f, 50.f));

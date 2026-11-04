@@ -1,9 +1,11 @@
 #include "WindowClass.h"
+#include "Manager/AssetManager.h"
 #include "Manager/InputManager.h"
 #include "Manager/ConsoleManager.h"
 #include "Manager/TimeManager.h"
 #include "Manager/RenderManager.h"
 #include "Manager/EventManager.h"
+#include "Manager/PathManager.h"
 
 LRESULT CALLBACK WindowProc(HWND h, UINT m, WPARAM w, LPARAM l)
 {
@@ -83,6 +85,9 @@ void WindowClass::Begin(HINSTANCE Instance)
 #ifdef _DEBUG
 	ConsoleManager::GetInstance().Begin();
 #endif
+	PathManager::GetInstance().Begin();
+
+	AssetManager::GetInstance().Begin();
 
 	TimeManager::GetInstance().Begin();
 
@@ -153,6 +158,8 @@ void WindowClass::End()
 	ViewInstance.End();
 
 	EventManager::GetInstance().End();
+
+	AssetManager::GetInstance().End();
 }
 
 void WindowClass::Resize()

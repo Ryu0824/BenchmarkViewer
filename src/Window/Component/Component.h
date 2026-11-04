@@ -14,6 +14,7 @@ enum class ComponentType
 	ListView,
 	BarChart,
 	ChartGroup,
+	Renderer,
 	End,
 };
 
