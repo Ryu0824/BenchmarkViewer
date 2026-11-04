@@ -71,11 +71,60 @@ void Button::Render(HDC dc)
 	UMath::Vector2 Position = TransformComp->GetPosition();
 	UMath::Vector2 Scale = TransformComp->GetScale();
 
-	Rectangle(dc,
-		int(Position.x - Scale.x / 2.f),
-		int(Position.y - Scale.y / 2.f),
-		int(Position.x + Scale.x / 2.f),
-		int(Position.y + Scale.y / 2.f));
+	if (State == ButtonState::None || State == ButtonState::OnMouseUp ||State == ButtonState::OnMouseExit||State==ButtonState::OnMouseEnter)
+	{
+		if (ButtonTexture[0])
+		{
+			Gdiplus::Graphics Graphics(dc);
+
+			Graphics.SetInterpolationMode(
+				Gdiplus::InterpolationModeHighQualityBicubic
+			);
+
+			Graphics.DrawImage(
+				ButtonTexture[0]->GetSource(),
+				(INT)(Position.x - Scale.x / 2.f),
+				(INT)(Position.y - Scale.y / 2.f),
+				(INT)Scale.x,
+				(INT)Scale.y
+			);
+		}
+		else
+		{
+			Rectangle(dc,
+				int(Position.x - Scale.x / 2.f),
+				int(Position.y - Scale.y / 2.f),
+				int(Position.x + Scale.x / 2.f),
+				int(Position.y + Scale.y / 2.f));
+		}
+	}
+	else if (State == ButtonState::OnMouseDown)
+	{
+		if (ButtonTexture[1])
+		{
+			Gdiplus::Graphics Graphics(dc);
+
+			Graphics.SetInterpolationMode(
+				Gdiplus::InterpolationModeHighQualityBicubic
+			);
+
+			Graphics.DrawImage(
+				ButtonTexture[1]->GetSource(),
+				(INT)(Position.x - Scale.x / 2.f),
+				(INT)(Position.y - Scale.y / 2.f),
+				(INT)Scale.x,
+				(INT)Scale.y
+			);
+		}
+		else
+		{
+			Rectangle(dc,
+				int(Position.x - Scale.x / 2.f),
+				int(Position.y - Scale.y / 2.f),
+				int(Position.x + Scale.x / 2.f),
+				int(Position.y + Scale.y / 2.f));
+		}
+	}
 }
 
 void Button::End()

@@ -21,6 +21,9 @@ void Viewer::Begin(HWND WindowHandle)
 	TransformComp = ResourceAddBtn->AddComponent<Transform>();
 	Button* ButtonComp = ResourceAddBtn->AddComponent<Button>();
 
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
+
 	ButtonComp->SetClickEvent([&]()
 		{
 			this->OpenFile();
@@ -36,6 +39,9 @@ void Viewer::Begin(HWND WindowHandle)
 	TransformComp = ResourecRemoveBtn->AddComponent<Transform>();
 	ButtonComp = ResourecRemoveBtn->AddComponent<Button>();
 
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
+
 	ButtonComp->SetClickEvent([&]()
 		{
 			this->RemoveResource();
@@ -50,6 +56,9 @@ void Viewer::Begin(HWND WindowHandle)
 	Object* ResourceSelectBtn = new Object;
 	TransformComp = ResourceSelectBtn->AddComponent<Transform>();
 	ButtonComp = ResourceSelectBtn->AddComponent<Button>();
+
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
 
 	ButtonComp->SetClickEvent([&]()
 		{
@@ -129,6 +138,9 @@ void Viewer::Begin(HWND WindowHandle)
 		{
 			this->SelectMeasureMentChart();
 		});
+
+	ButtonComp->SetTexture(0, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Idle.png"));
+	ButtonComp->SetTexture(1, AssetManager::GetInstance().GetAsset<Texture2D>(L"E:\\Dev\\BenchmarkViewer\\build\\vs2026-x64-debug\\Debug\\Asset\\Pressed.png"));
 
 	TransformComp->SetPosition(UMath::Vector2(300.f, 200.f));
 	TransformComp->SetScale(UMath::Vector2(110.f, 50.f));

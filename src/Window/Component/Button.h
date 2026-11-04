@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "../Manager/EventManager.h"
+#include "../Asset/Texture2D.h"
 
 enum class ButtonState
 {
@@ -39,8 +40,15 @@ public:
 		OnClickEvent.Subscribe(CallBackInst);
 	}
 
+	void SetTexture(int Index, Texture2D* InSource)
+	{
+		ButtonTexture[Index] = InSource;
+	}
+
 private:
 	bool Interactive();
 	ButtonState State;
 	Event<void()> OnClickEvent;
+
+	Texture2D* ButtonTexture[3];
 };
